@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "echart-bar": "/components/reg-bar/index"
+  },
+  "enablePullDownRefresh": true 
+}

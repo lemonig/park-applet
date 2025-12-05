@@ -1,0 +1,58 @@
+<navigation-bar default-data="{{titleProps}}" bind:customBack="parentMethod" ></navigation-bar>
+
+<view class="page-container">
+  <view class="header-section">
+    <t-search placeholder="搜索车位编号，如 A-88" shape="round" />
+  </view>
+
+  <view class="list-section">
+    <block wx:for="{{parkingList}}" wx:key="id">
+      <view class="parking-card">
+        <view class="card-left">
+          <t-image src="{{item.imageUrl}}" width="200rpx" height="200rpx" shape="round" mode="aspectFill" aria-label="车位图片" />
+          <view class="status-badge {{item.status === 'sold' ? 'status-sold' : 'status-active'}}">
+            {{item.statusText}}
+          </view>
+        </view>
+
+        <view class="card-right">
+          <view class="card-header">
+            <text class="parking-number">{{item.number}}</text>
+          </view>
+
+          <view class="card-tags">
+            <block wx:for="{{item.tags}}" wx:for-item="tag" wx:key="*this">
+              <t-tag class="margin-tag" variant="light" theme="primary" size="small">{{tag}}</t-tag>
+            </block>
+          </view>
+
+          <view class="card-footer">
+            <view class="price-box">
+              <text class="currency">¥</text>
+              <text class="amount">{{item.price}}</text>
+              <text class="unit">/月</text>
+            </view>
+            
+            <t-button 
+              wx:if="{{item.status === 'available'}}" 
+              theme="primary" 
+              size="small" 
+              shape="round"
+              bind:tap="onBook" 
+              data-id="{{item.id}}">
+              预订
+            </t-button>
+            <t-button 
+              wx:else 
+              theme="default" 
+              disabled 
+              size="small" 
+              shape="round">
+              已租
+            </t-button>
+          </view>
+        </view>
+      </view>
+    </block>
+  </view>
+</view>

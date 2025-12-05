@@ -1,0 +1,104 @@
+/* login.wxss */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  // justify-content: center;
+  height: 100vh;
+
+// 以下删除
+padding-top: 30%;
+}
+
+.logo {
+  // width: 100px;
+  // height: 100px;
+}
+
+.logo .van-image {
+  width: 300rpx;
+  height: 100rpx;
+}
+
+.title {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+// .title {
+//   font-size: 24px;
+//   margin-top: 20px;
+// }
+
+.login-btn {
+  margin-top: 40px;
+  width: 80%;
+  font-size: 30rpx;
+}
+
+.error-container {
+  display: flex;
+  align-items: center;
+  color: #ff0000;
+  font-weight: bold;
+}
+
+.error-icon {
+  margin-right: 10px;
+  animation: error-icon-anim 0.8s infinite;
+}
+
+@keyframes error-icon-anim {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateX(0);
+  }
+  40% {
+    transform: translateX(-10px);
+  }
+  60% {
+    transform: translateX(10px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.error-message {
+  animation: error-text-anim 0s infinite;
+  animation-fill-mode: forwards;
+}
+
+@keyframes error-text-anim {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(-5px);
+  }
+}
+.form{
+  width: 80%;
+}
+.login-footer{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    padding: 40rpx 0 60rpx ;
+    // height: 100rpx;
+    .footer-main{
+        width: 100vw;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .main-item{
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+            .text{
+                font-size: 24rpx;
+                color: rgba(0,0,0,0.4);
+            }
+        }
+        
+    }
+}

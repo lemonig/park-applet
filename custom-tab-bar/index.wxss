@@ -1,0 +1,12 @@
+/* custom-tab-bar/index.wxss */
+.custom-tab-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100rpx;
+  background: #fff;
+  display: flex;
+  border-top: 1px solid #eee;
+  padding-bottom: env(safe-area-inset-bottom); /* 防止被 iPhone 底部指示条遮挡 */
+}

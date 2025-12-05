@@ -1,0 +1,95 @@
+/* 页面背景 */
+.page-container {
+  background-color: #f6f6f6; /* TDesign 常用浅灰背景 */
+  min-height: 100vh;
+  padding-bottom: 40rpx;
+}
+
+/* 顶部搜索背景 */
+.header-section {
+  background-color: #fff;
+  padding: 16rpx 24rpx;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+/* 列表容器 */
+.list-section {
+  padding: 24rpx;
+}
+
+/* 卡片主体 */
+.parking-card {
+  background-color: #fff;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  margin-bottom: 24rpx;
+  display: flex;
+  flex-direction: row;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04); /* 轻微阴影 */
+}
+
+/* 左侧布局 */
+.card-left {
+  position: relative;
+  margin-right: 24rpx;
+  flex-shrink: 0; /* 防止图片被压缩 */
+}
+
+/* 自定义状态角标 */
+.status-badge {
+  position: absolute;
+  top: 10rpx;
+  left: 10rpx;
+  font-size: 20rpx;
+  padding: 4rpx 12rpx;
+  border-radius: 8rpx;
+  color: #fff;
+  font-weight: 500;
+}
+.status-active { background-color: #0052d9; } /* TDesign 品牌蓝 */
+.status-sold { background-color: #999; }
+
+/* 右侧布局 */
+.card-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* 编号标题 */
+.parking-number {
+  font-size: 34rpx;
+  font-weight: 600;
+  color: #333;
+}
+
+/* 标签间距 */
+.card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 8rpx;
+}
+.margin-tag {
+  margin-right: 12rpx;
+  margin-bottom: 8rpx;
+}
+
+/* 底部价格与按钮区域 */
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end; /* 底部对齐 */
+  margin-top: 16rpx;
+}
+
+/* 价格样式 */
+.price-box {
+  color: #fa4126; /* TDesign 警告/价格红 */
+  line-height: 1;
+}
+.currency { font-size: 24rpx; font-weight: bold; }
+.amount { font-size: 40rpx; font-weight: bold; margin: 0 4rpx; }
+.unit { font-size: 24rpx; color: #999; font-weight: normal; }
