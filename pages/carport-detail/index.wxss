@@ -1,0 +1,117 @@
+.page-container {
+  background-color: #f6f6f6;
+  min-height: 100vh;
+  padding-bottom: 0;
+}
+/* 通用卡片样式 */
+.info-card {
+  background-color: #fff;
+  margin-bottom: 20rpx;
+  padding: 32rpx;
+}
+/* 头部卡片特殊处理 */
+.header-card {
+  padding-top: 40rpx;
+  padding-bottom: 40rpx;
+}
+/* 价格行 */
+.price-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+.price-wrapper {
+  color: #fa4126;
+  /* 价格红 */
+  display: flex;
+  align-items: baseline;
+}
+.currency {
+  font-size: 28rpx;
+  font-weight: bold;
+}
+.amount {
+  font-size: 56rpx;
+  font-weight: bold;
+  margin: 0 8rpx;
+  line-height: 1;
+}
+.unit {
+  font-size: 24rpx;
+  color: #999;
+}
+/* 标题行 */
+.title-row {
+  margin-bottom: 24rpx;
+}
+.main-title {
+  font-size: 36rpx;
+  font-weight: 600;
+  color: #333;
+}
+/* 标签行 */
+.tags-row {
+  display: flex;
+}
+.tag-item {
+  margin-right: 16rpx;
+}
+/* 版块标题 */
+.card-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 24rpx;
+  border-left: 8rpx solid #0052d9;
+  /* 蓝色竖条装饰 */
+  padding-left: 16rpx;
+  line-height: 1;
+}
+/* 纯文本块 */
+.text-block {
+  font-size: 26rpx;
+  color: #666;
+  line-height: 1.6;
+}
+/* 底部防遮挡占位 */
+.bottom-spacer {
+  height: 180rpx;
+}
+/* 底部固定栏 */
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  padding: 16rpx 24rpx;
+  box-sizing: border-box;
+  box-shadow: 0 -2rpx 10rpx rgba(0, 0, 0, 0.05);
+  /* 适配 iPhone X 底部黑条 */
+  padding-bottom: calc(16rpx + env(safe-area-inset-bottom));
+  z-index: 100;
+}
+.icon-actions {
+  display: flex;
+  margin-right: 24rpx;
+}
+.action-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 32rpx;
+  font-size: 20rpx;
+  color: #666;
+}
+.btn-actions {
+  flex: 1;
+  display: flex;
+  gap: 16rpx;
+}
+/* 强制覆盖 TDesign 按钮样式使其撑满 */
+.btn-actions t-button {
+  flex: 1;
+}

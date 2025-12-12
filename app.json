@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/carport-detail/index",
     "pages/login/index",
     "pages/home/index",
     "pages/user/index"
@@ -70,9 +71,7 @@
   "networkTimeout": {
     "request": 10000
   },
-  "plugins": {
-
-  },
+  "plugins": {},
   "tabBar": {
     "custom": true,
     "backgroundColor": "#fff",
@@ -84,7 +83,6 @@
         "pagePath": "pages/home/index",
         "text": "首页"
       },
-
       {
         "pagePath": "pages/user/index",
         "text": "我的"

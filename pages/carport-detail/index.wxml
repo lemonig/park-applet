@@ -1,0 +1,78 @@
+<view class="page-container">
+  
+  <t-swiper
+    current="{{current}}"
+    autoplay="{{false}}"
+    navigation="{{ { type: 'fraction' } }}"
+    list="{{swiperList}}"
+    height="500rpx"
+  />
+
+  <view class="info-card header-card">
+    <view class="price-row">
+      <view class="price-wrapper">
+        <text class="currency">¥</text>
+        <text class="amount">{{detail.price}}</text>
+        <text class="unit">/月 (押一付三)</text>
+      </view>
+      <t-tag variant="light" theme="success" shape="mark">随时起租</t-tag>
+    </view>
+    
+    <view class="title-row">
+      <text class="main-title">{{detail.zone}} - {{detail.number}} 号车位</text>
+    </view>
+    
+    <view class="tags-row">
+      <t-tag class="tag-item" variant="outline" theme="primary" size="small">独立车位</t-tag>
+      <t-tag class="tag-item" variant="outline" theme="default" size="small">B2层直达</t-tag>
+    </view>
+  </view>
+
+  <view class="info-card">
+    <view class="card-title">基本信息</view>
+    <t-cell-group theme="card">
+      <t-cell title="所属楼层" note="{{detail.floor}}" leftIcon="layers" />
+      <t-cell title="适停车型" note="大型SUV / 轿车" leftIcon="car" />
+      <t-cell title="地锁情况" note="配备智能遥控地锁" leftIcon="lock-on" />
+      <t-cell title="入场方式" note="车牌自动识别" leftIcon="scan" />
+    </t-cell-group>
+  </view>
+
+  <view class="info-card">
+    <view class="card-title">配套设施</view>
+    <t-grid column="{{4}}" border="{{false}}">
+      <t-grid-item text="24h监控" icon="video" />
+      <t-grid-item text="充足照明" icon="brightness" />
+      <t-grid-item text="定期保洁" icon="user-avatar" />
+      <t-grid-item text="消防喷淋" icon="error-circle" />
+    </t-grid>
+  </view>
+
+  <view class="info-card">
+    <view class="card-title">租赁须知</view>
+    <view class="text-block">
+      1. 最短租期为3个月，支持长租优惠。<br/>
+      2. 预订成功后请在24小时内联系管理员录入车牌。<br/>
+      3. 车位内严禁堆放杂物，违者将由物业清理。
+    </view>
+  </view>
+  
+  <view class="bottom-spacer"></view>
+
+  <view class="bottom-bar">
+    <view class="icon-actions">
+      <view class="action-item">
+        <t-icon name="heart" size="48rpx" />
+        <text>收藏</text>
+      </view>
+      <view class="action-item">
+        <t-icon name="share" size="48rpx" />
+        <text>分享</text>
+      </view>
+    </view>
+    <view class="btn-actions">
+      <t-button theme="light" content="联系房东" size="large" />
+      <t-button theme="primary" content="立即预订" size="large" />
+    </view>
+  </view>
+</view>
