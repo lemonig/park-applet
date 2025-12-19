@@ -1,9 +1,10 @@
 {
   "pages": [
+    "pages/home/index",
     "pages/carport-detail/index",
     "pages/login/index",
-    "pages/home/index",
-    "pages/user/index"
+    "pages/user/index",
+    "pages/carport-form/index"
   ],
   "window": {
     "backgroundTextStyle": "light",

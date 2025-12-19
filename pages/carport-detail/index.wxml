@@ -32,7 +32,7 @@
     <view class="card-title">基本信息</view>
     <t-cell-group theme="card">
       <t-cell title="所属楼层" note="{{detail.floor}}" leftIcon="layers" />
-      <t-cell title="适停车型" note="大型SUV / 轿车" leftIcon="car" />
+      <t-cell title="规格" note="200cm*300cm" leftIcon="layers" />
       <t-cell title="地锁情况" note="配备智能遥控地锁" leftIcon="lock-on" />
       <t-cell title="入场方式" note="车牌自动识别" leftIcon="scan" />
     </t-cell-group>
