@@ -79,8 +79,7 @@
     "color": "#999",
     "selectedColor": "#1E8AE8",
     "borderStyle": "white",
-    "list": [
-      {
+    "list": [{
         "pagePath": "pages/home/index",
         "text": "首页"
       },

@@ -1,9 +1,9 @@
 import dayjs from 'dayjs';
 import { formatTime } from '../../utils/util';
 import {
-  listCarport,
+  listMarket,
 
-} from '../../api/car';
+} from '../../api/market';
 
 Page({
   data: {
@@ -60,7 +60,7 @@ Page({
     
       },
     };
-    let { data, additional_data } = await listCarport(params);
+    let { data, additional_data } = await listMarket(params);
     if (additional_data.pagination.total === this.data.pageData.length) {
       this.setData({
         isAllData: true,
