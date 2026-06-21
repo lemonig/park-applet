@@ -60,11 +60,24 @@
   flex-direction: column;
   justify-content: space-between;
 }
+/* 编号 + 类型 */
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
 /* 编号标题 */
 .parking-number {
   font-size: 34rpx;
   font-weight: 600;
   color: #333;
+}
+/* 列表底部提示 */
+.list-tip {
+  text-align: center;
+  color: #999;
+  font-size: 24rpx;
+  padding: 24rpx 0;
 }
 /* 标签间距 */
 .card-tags {

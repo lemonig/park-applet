@@ -1,73 +1,56 @@
-/*
- * @Author: liweiqiang liweiqiang@grean.com.cn
- * @Date: 2025-11-19 13:08:31
- * @LastEditors: liweiqiang liweiqiang@grean.com.cn
- * @LastEditTime: 2025-11-19 16:35:50
- * @FilePath: \noise-applet\custom-tab-bar\index.js
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- */
 const app = getApp();
+
 Component({
   data: {
-   
-    value: 0, // 默认选中的值，这里使用页面路径作为唯一标识
+    value: '/pages/home/index',
     list: [
       {
         value: '/pages/home/index',
         label: '首页',
-        icon: 'home' 
+        icon: 'home',
       },
- 
       {
         value: '/pages/user/index',
         label: '我的',
-        icon: 'user'
-      }
+        icon: 'user',
+      },
     ],
+    // 自定义 TDesign 主题色：选中态颜色（与 app.json selectedColor 保持一致）
     theme: {
       custom: {
-        colorPrimary: '#333',
+        colorPrimary: '#1E8AE8',
       },
     },
   },
 
+  lifetimes: {
+    attached() {
+      this.init();
+    },
+  },
+
+  pageLifetimes: {
+    show() {
+      this.init();
+    },
+  },
+
   methods: {
-  
     onChange(e) {
       const url = e.detail.value;
-      
-      // 切换 Tab 页面
-      wx.switchTab({
-        url: url
-      });
-      
-      // 注意：这里不需要手动 setData 修改 value
-      // 因为页面切换后，新页面的 onShow 会负责更新 TabBar 的选中状态
+      if (url === this.data.value) return;
+      this.setData({ value: url });
+      wx.switchTab({ url });
     },
-    lifetimes: {
-      attached: function () {
-        // 在组件实例进入页面节点树时执行
-      },
-  
-    },
-    pageLifetimes: {
-      show: function() {
-        // 页面被展示
-        console.log('bar');
-      },
-  
-    },
-  
 
     init() {
       const page = getCurrentPages().pop();
-      const route = page ? page.route.split('?')[0] : '';
-      const active = this.data.list.findIndex(
-        (item) => (item.url.startsWith('/') ? item.url.substr(1) : item.url) === `${route}`,
-      );
-      this.setData({
-        active,
-      });
+      if (!page) return;
+      const route = `/${page.route.split('?')[0]}`;
+      const matched = this.data.list.find((item) => item.value === route);
+      if (matched && this.data.value !== matched.value) {
+        this.setData({ value: matched.value });
+      }
     },
   },
 });

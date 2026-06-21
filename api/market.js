@@ -1,14 +1,14 @@
 import {
   _post,
+  _get,
   _upload
 } from "../server/request";
 
 
-// 市场列表 
+// 市场列表（后端为 GET，参数：pageNum/pageSize/type/parkingNo/status）
 export function listMarket(data) {
-  return _post({
+  return _get({
     url: `/api/market/list`,
-    method: 'post',
     data
   })
 }
@@ -36,11 +36,9 @@ export function updateMarket(data) {
     data
   })
 }
-// 详情 
-export function detailMarket(data) {
-  return _post({
-    url: `/api/market/detail`,
-    method: 'post',
-    data
+// 详情（后端为 GET，路径变量 /detail/{id}）
+export function detailMarket(id) {
+  return _get({
+    url: `/api/market/detail/${id}`
   })
 }

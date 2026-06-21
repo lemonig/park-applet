@@ -1,139 +1,102 @@
-import dayjs from 'dayjs';
-import { formatTime } from '../../utils/util';
-import {
-  listMarket,
+import { listMarket } from '../../api/market';
 
-} from '../../api/market';
+const PAGE_SIZE = 10;
+const PLACEHOLDER_IMG = 'https://tdesign.gtimg.com/miniprogram/images/example1.png';
 
 Page({
   data: {
     titleProps: {
       title: '首页',
     },
-    // 模拟车位列表数据
-    parkingList: [
-      {
-        id: '1',
-        number: 'B2-A088',
-        price: '600',
-        status: 'available', // 状态控制
-        statusText: '闲置',
-        tags: ['监控覆盖', '独立车位'],
-        // 使用 TDesign 官网或颜色块作为占位图
-        imageUrl: 'https://tdesign.gtimg.com/miniprogram/images/example1.png'
-      },
-      {
-        id: '2',
-        number: 'B2-C102',
-        price: '450',
-        status: 'available',
-        statusText: '特价',
-        tags: ['靠近电梯', '柱子旁'],
-        imageUrl: 'https://tdesign.gtimg.com/miniprogram/images/example2.png'
-      },
-      {
-        id: '3',
-        number: 'B1-VIP01',
-        price: '1200',
-        status: 'sold', // 已租状态
-        statusText: '已租',
-        tags: ['充电桩', '加宽', 'VIP区'],
-        // 灰色占位图示意
-        imageUrl: 'https://tdesign.gtimg.com/miniprogram/images/example3.png'
-      },
-      {
-        id: '4',
-        number: 'B3-D055',
-        price: '300',
-        status: 'available',
-        statusText: '新上架',
-        tags: ['B3层', '价格优惠'],
-        imageUrl: 'https://tdesign.gtimg.com/miniprogram/images/example1.png'
-      }
-    ]
+    keyword: '',
+    pageNum: 1,
+    pageData: [],
+    total: 0,
+    loading: false,
+    isAllData: false,
   },
-  fetchData: async function () {
-    let params = {
-      page: this.data.pageNo,
-      size: 30,
-      data: {
-    
-      },
+
+  formatItem(item) {
+    const images = item.images || [];
+    return {
+      ...item,
+      imageUrl: images.length ? images[0].url : PLACEHOLDER_IMG,
+      typeText: item.type === 1 ? '出售' : '出租',
+      unit: item.type === 1 ? '元' : '元/月',
+      available: item.status === 1,
+      statusText: item.status === 1 ? '在售' : item.status === 0 ? '待审核' : '已下架',
     };
-    let { data, additional_data } = await listMarket(params);
-    if (additional_data.pagination.total === this.data.pageData.length) {
+  },
+
+  fetchData: async function (reset = false) {
+    if (this.data.loading) return;
+    if (!reset && this.data.isAllData) return;
+
+    const pageNum = reset ? 1 : this.data.pageNum;
+    this.setData({ loading: true });
+
+    const params = {
+      pageNum,
+      pageSize: PAGE_SIZE,
+    };
+    if (this.data.keyword) {
+      params.parkingNo = this.data.keyword;
+    }
+
+    try {
+      const res = await listMarket(params);
+      const list = (res.data || []).map((item) => this.formatItem(item));
+      const total = res.page ? res.page.total : 0;
+      const pageData = reset ? list : this.data.pageData.concat(list);
+
       this.setData({
-        isAllData: true,
+        pageData,
+        total,
+        pageNum: pageNum + 1,
+        isAllData: pageData.length >= total,
         loading: false,
       });
-      return;
+    } catch (err) {
+      this.setData({ loading: false });
+    } finally {
+      wx.stopPullDownRefresh();
     }
-    this.setData({
-      loading: false,
-      pageData: this.data.pageData.concat(data),
-    });
   },
-  // 预订按钮点击事件
+
+  // 搜索框输入变化
+  onSearchChange(e) {
+    this.setData({ keyword: e.detail.value });
+  },
+
+  // 触发搜索
+  onSearch() {
+    this.fetchData(true);
+  },
+
+  // 卡片/预订点击：跳转详情
   onBook(e) {
     const id = e.currentTarget.dataset.id;
-    wx.showToast({
-      title: `选择了车位 ID: ${id}`,
-      icon: 'none'
+    wx.navigateTo({
+      url: `/pages/carport-detail/index?id=${id}`,
     });
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad(options) {
-    this.fetchData();
+  onLoad() {
+    this.fetchData(true);
   },
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady() {},
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
   onShow() {
-    this.setData({
-      isAllData: false,
-    });
-    this.fetchData();
-
+    this.fetchData(true);
     this.getTabBar().init();
   },
 
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide() {
-    // this.setData({
-    //   pageData: [],
-    //   pageNo: 1,
-    // });
+  onPullDownRefresh() {
+    this.fetchData(true);
   },
 
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload() {},
+  onReachBottom() {
+    this.fetchData(false);
+  },
 
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh() {},
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom() {},
-
-  /**
-   * 用户点击右上角分享
-   */
   onShareAppMessage() {},
- 
 });

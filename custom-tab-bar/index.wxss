@@ -4,9 +4,37 @@
   bottom: 0;
   left: 0;
   right: 0;
-  height: 100rpx;
   background: #fff;
-  display: flex;
-  border-top: 1px solid #eee;
-  padding-bottom: env(safe-area-inset-bottom); /* 防止被 iPhone 底部指示条遮挡 */
+  border-top: 1rpx solid #eee;
+  padding-bottom: env(safe-area-inset-bottom);
+  z-index: 999;
+}
+
+/* TDesign 主题变量已通过 inline style 覆盖；这里强化选中态视觉 */
+.t-tab-bar-item__content--checked {
+  color: #1E8AE8 !important;
+  font-weight: 600;
+}
+
+.t-tab-bar-item__content--checked .t-tab-bar-item__icon {
+  transform: scale(1.08);
+  transition: transform 0.2s ease;
+}
+
+/* 选中态文字下方小圆点指示器 */
+.t-tab-bar-item__content--checked::after {
+  content: '';
+  position: absolute;
+  bottom: 6rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8rpx;
+  height: 8rpx;
+  border-radius: 50%;
+  background-color: #1E8AE8;
+}
+
+.t-tab-bar-item__content {
+  position: relative;
+  transition: color 0.2s ease;
 }

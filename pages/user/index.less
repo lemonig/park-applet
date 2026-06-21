@@ -3,22 +3,23 @@
   background-color: #f6f6f6;
   padding-bottom: 80rpx;
 }
+
 /* 顶部资料卡 */
 .profile-card {
   position: relative;
   height: 280rpx;
-  margin: 24rpx 24rpx 0;
+  margin: 0 24rpx;
   border-radius: 24rpx;
   overflow: hidden;
+  margin-top: 24rpx;
 }
+
 .profile-bg {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0;
   background: linear-gradient(135deg, #0052d9 0%, #1e8ae8 100%);
 }
+
 .profile-content {
   position: relative;
   z-index: 1;
@@ -28,12 +29,14 @@
   height: 100%;
   box-sizing: border-box;
 }
+
 .profile-info {
   flex: 1;
   margin-left: 24rpx;
   color: #fff;
   overflow: hidden;
 }
+
 .nickname {
   font-size: 36rpx;
   font-weight: 600;
@@ -42,16 +45,20 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
 .sub {
   font-size: 24rpx;
   opacity: 0.85;
 }
+
 .sub.placeholder {
   opacity: 0.7;
 }
+
 .mobile.placeholder {
   opacity: 0.7;
 }
+
 /* 统计卡 */
 .stats-card {
   display: flex;
@@ -64,36 +71,43 @@
   position: relative;
   z-index: 2;
 }
+
 .stats-item {
   flex: 1;
   text-align: center;
 }
+
 .stats-value {
   font-size: 40rpx;
   font-weight: 600;
   color: #333;
   line-height: 1.2;
 }
+
 .stats-label {
   font-size: 24rpx;
   color: #888;
   margin-top: 8rpx;
 }
+
 .stats-divider {
   width: 1rpx;
   height: 48rpx;
   background-color: #eee;
 }
+
 /* 菜单组 */
 .menu-group {
   margin: 24rpx;
   border-radius: 24rpx;
   overflow: hidden;
 }
+
 /* 退出登录 */
 .logout-wrap {
   margin: 48rpx 24rpx 0;
 }
+
 .footer-tip {
   text-align: center;
   font-size: 22rpx;

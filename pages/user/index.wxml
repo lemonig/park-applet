@@ -1,2 +1,77 @@
-<!--pages/user/index.wxml-->
-<text>pages/user/index.wxml</text>
+<navigation-bar default-data="{{titleProps}}"></navigation-bar>
+
+<view class="user-page">
+  <!-- 顶部资料区 -->
+  <view class="profile-card" bind:tap="onProfileTap">
+    <view class="profile-bg"></view>
+    <view class="profile-content">
+      <t-avatar image="{{avatar}}" size="large" />
+      <view class="profile-info">
+        <block wx:if="{{isLogin}}">
+          <view class="nickname">{{userInfo.nickname || userInfo.name || '未设置昵称'}}</view>
+          <view class="sub">
+            <text wx:if="{{userInfo.mobile}}" class="mobile">{{userInfo.mobile}}</text>
+            <text wx:else class="mobile placeholder">未绑定手机号</text>
+          </view>
+        </block>
+        <block wx:else>
+          <view class="nickname">点击登录</view>
+          <view class="sub placeholder">登录后查看更多内容</view>
+        </block>
+      </view>
+      <t-icon name="chevron-right" size="40rpx" color="#fff" />
+    </view>
+  </view>
+
+  <!-- 数据统计卡 -->
+  <view class="stats-card">
+    <view class="stats-item" bind:tap="onStatsTap">
+      <view class="stats-value">{{stats.total}}</view>
+      <view class="stats-label">我的发布</view>
+    </view>
+    <view class="stats-divider"></view>
+    <view class="stats-item" bind:tap="onStatsTap">
+      <view class="stats-value">{{stats.pending}}</view>
+      <view class="stats-label">审核中</view>
+    </view>
+    <view class="stats-divider"></view>
+    <view class="stats-item" bind:tap="onStatsTap">
+      <view class="stats-value">{{stats.approved}}</view>
+      <view class="stats-label">已上架</view>
+    </view>
+  </view>
+
+  <!-- 菜单组 -->
+  <t-cell-group theme="card" class="menu-group">
+    <t-cell
+      wx:for="{{menuList}}"
+      wx:key="key"
+      title="{{item.title}}"
+      left-icon="{{item.icon}}"
+      arrow
+      hover
+      bind:click="onMenuTap"
+      data-key="{{item.key}}"
+      data-url="{{item.url}}"
+      data-action="{{item.action}}"
+    />
+  </t-cell-group>
+
+  <!-- 退出登录 -->
+  <view wx:if="{{isLogin}}" class="logout-wrap">
+    <t-button theme="light" block size="large" bind:tap="onLogoutTap">退出登录</t-button>
+  </view>
+
+  <view class="footer-tip">车位租售平台 · v1.0.0</view>
+</view>
+
+<!-- 退出确认 -->
+<t-dialog
+  visible="{{logoutDialog.visible}}"
+  title="{{logoutDialog.title}}"
+  content="{{logoutDialog.content}}"
+  confirm-btn="{{logoutDialog.confirmBtn}}"
+  cancel-btn="{{logoutDialog.cancelBtn}}"
+  bind:confirm="onLogoutConfirm"
+  bind:cancel="onLogoutCancel"
+/>

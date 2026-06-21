@@ -71,7 +71,8 @@ Page({
     // params.password = hexMD5(params.password);
     let { data, success } = await login(params);
     if (success) {
-      wx.setStorage({ key: 'token', data: data.token });
+      wx.setStorageSync('token', data.token);
+      wx.setStorageSync('userInfo', data);
       wx.switchTab({
         url: '/pages/home/index',
       });
