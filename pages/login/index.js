@@ -2,15 +2,14 @@
 // 获取应用实例
 import { login, wxLogin } from '../../api/user';
 const app = getApp();
-import Toast from 'tdesign-miniprogram/toast';
 const validate = require('../../utils/validate');
 Page({
   data: {
     navBarHeight: app.globalData.navBarHeight,
     titleProps: {
-      title: '噪声仪',
+      title: '登录',
     },
-    //  页面是否需要安全高度
+    loginMode: 'wechat',
     loading: false,
     form: {
       account: {
@@ -29,9 +28,51 @@ Page({
       },
     },
     hasUserInfo: false,
-    errMsg:'',
+    errMsg: '',
   },
   onLoad() {},
+  switchLoginMode() {
+    this.setData({
+      loginMode: this.data.loginMode === 'wechat' ? 'password' : 'wechat',
+      errMsg: '',
+    });
+  },
+  saveLogin(data) {
+    wx.setStorageSync('token', data.token);
+    wx.setStorageSync('userInfo', data);
+    wx.switchTab({
+      url: '/pages/home/index',
+    });
+  },
+  handleWechatLogin() {
+    if (this.data.loading) return;
+    this.setData({ loading: true, errMsg: '' });
+    wx.login({
+      success: async ({ code }) => {
+        if (!code) {
+          this.setData({ loading: false, errMsg: '微信登录失败' });
+          wx.showToast({ title: '微信登录失败', icon: 'none' });
+          return;
+        }
+        try {
+          const res = await wxLogin({ code });
+          if (res && res.success && res.data) {
+            this.saveLogin(res.data);
+            return;
+          }
+          this.setData({ errMsg: res.message || '微信登录失败' });
+        } catch (err) {
+          this.setData({ errMsg: '微信登录失败，请稍后重试' });
+        } finally {
+          this.setData({ loading: false });
+        }
+      },
+      fail: () => {
+        this.setData({ loading: false, errMsg: '微信登录失败' });
+        wx.showToast({ title: '微信登录失败', icon: 'none' });
+      },
+    });
+  },
   //  用户名输入框输入方法
   handleUsernameInput(e) {
     this.data.form.account.value = e.detail;
@@ -71,11 +112,8 @@ Page({
     // params.password = hexMD5(params.password);
     let { data, success } = await login(params);
     if (success) {
-      wx.setStorageSync('token', data.token);
-      wx.setStorageSync('userInfo', data);
-      wx.switchTab({
-        url: '/pages/home/index',
-      });
+      this.saveLogin(data);
+      return;
     }
     this.setData({ loading: false });
   },

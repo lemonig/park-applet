@@ -10,6 +10,14 @@ export function login(data) {
   })
 }
 
+// 微信一键登录
+export function wxLogin(data) {
+  return _post({
+    url: `/api/wx-login`,
+    data
+  })
+}
+
 // 用户列表
 export function list(data) {
   return _post({
