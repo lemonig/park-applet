@@ -9,9 +9,82 @@
 .header-section {
   background-color: #fff;
   padding: 16rpx 24rpx;
-  position: sticky;
-  top: 0;
+  position: fixed;
+  left: 0;
+  right: 0;
   z-index: 100;
+  box-sizing: border-box;
+  opacity: 0;
+  transform: translateY(-100%);
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.header-section-show {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* 列表容器 */
+.action-section {
+  display: flex;
+  gap: 24rpx;
+  padding: 24rpx 24rpx 0;
+}
+.action-card {
+  position: relative;
+  flex: 1;
+  height: 168rpx;
+  padding: 28rpx;
+  border-radius: 28rpx;
+  overflow: hidden;
+  box-sizing: border-box;
+  color: #fff;
+  box-shadow: 0 14rpx 28rpx rgba(0, 82, 217, 0.16);
+}
+.action-card::after {
+  content: '';
+  position: absolute;
+  right: -34rpx;
+  bottom: -48rpx;
+  width: 150rpx;
+  height: 150rpx;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.18);
+}
+.action-sale {
+  background: linear-gradient(135deg, #ff8f1f 0%, #fa4126 100%);
+}
+.action-rent {
+  background: linear-gradient(135deg, #2ba471 0%, #0052d9 100%);
+}
+.action-content {
+  position: relative;
+  z-index: 1;
+}
+.action-title {
+  font-size: 36rpx;
+  font-weight: 700;
+  line-height: 1;
+}
+.action-desc {
+  margin-top: 18rpx;
+  font-size: 24rpx;
+  color: rgba(255, 255, 255, 0.86);
+}
+.action-icon {
+  position: absolute;
+  right: 24rpx;
+  bottom: 22rpx;
+  z-index: 1;
+  width: 56rpx;
+  height: 56rpx;
+  line-height: 56rpx;
+  text-align: center;
+  border-radius: 50%;
+  font-size: 26rpx;
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.24);
 }
 
 /* 列表容器 */

@@ -1,5 +1,6 @@
 import { listMarket } from '../../api/market';
 
+const app = getApp();
 const PAGE_SIZE = 10;
 const PLACEHOLDER_IMG = 'https://tdesign.gtimg.com/miniprogram/images/example1.png';
 
@@ -14,6 +15,9 @@ Page({
     total: 0,
     loading: false,
     isAllData: false,
+    showHeaderSearch: false,
+    lastScrollTop: 0,
+    navBarHeight: app.globalData.navBarHeight || 0,
   },
 
   formatItem(item) {
@@ -73,6 +77,19 @@ Page({
     this.fetchData(true);
   },
 
+  onActionTap(e) {
+    const token = wx.getStorageSync('token');
+    if (!token) {
+      wx.showToast({ title: '请先登录', icon: 'none' });
+      setTimeout(() => wx.navigateTo({ url: '/pages/login/index' }), 600);
+      return;
+    }
+    const type = e.currentTarget.dataset.type;
+    wx.navigateTo({
+      url: `/pages/carport-form/index?type=${type}`,
+    });
+  },
+
   // 卡片/预订点击：跳转详情
   onBook(e) {
     const id = e.currentTarget.dataset.id;
@@ -96,6 +113,22 @@ Page({
 
   onReachBottom() {
     this.fetchData(false);
+  },
+
+  onPageScroll(e) {
+    const scrollTop = e.scrollTop || 0;
+    const lastScrollTop = this.data.lastScrollTop;
+    const diff = scrollTop - lastScrollTop;
+
+    if (Math.abs(diff) < 8) return;
+
+    const showHeaderSearch = diff < 0 && scrollTop > this.data.navBarHeight;
+    if (showHeaderSearch !== this.data.showHeaderSearch) {
+      this.setData({ showHeaderSearch, lastScrollTop: scrollTop });
+      return;
+    }
+
+    this.setData({ lastScrollTop: scrollTop });
   },
 
   onShareAppMessage() {},

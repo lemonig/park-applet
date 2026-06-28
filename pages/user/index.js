@@ -17,7 +17,8 @@ Page({
       approved: 0,
     },
     menuList: [
-      { key: 'publish', title: '发布车位', icon: 'add-circle', url: '/pages/carport-form/index' },
+      { key: 'publishSale', title: '发布出售车位', icon: 'add-circle', url: '/pages/carport-form/index?type=1' },
+      { key: 'publishRent', title: '发布出租车位', icon: 'add-circle', url: '/pages/carport-form/index?type=2' },
       { key: 'my', title: '我的发布', icon: 'view-list', url: '/pages/carport-form/index?mine=1' },
       { key: 'service', title: '联系客服', icon: 'service', action: 'contactService' },
       { key: 'about', title: '关于我们', icon: 'info-circle', action: 'showAbout' },
@@ -121,7 +122,7 @@ Page({
 
   // 未登录拦截（部分菜单允许免登录浏览，这里发布与我的需登录）
   requireLogin(key) {
-    const needLoginKeys = ['publish', 'my', 'profile'];
+    const needLoginKeys = ['publishSale', 'publishRent', 'my', 'profile'];
     if (needLoginKeys.includes(key) && !this.data.isLogin) {
       wx.showToast({ title: '请先登录', icon: 'none' });
       setTimeout(() => this.goLogin(), 600);

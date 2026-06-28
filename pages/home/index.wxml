@@ -1,7 +1,7 @@
 <navigation-bar default-data="{{titleProps}}" bind:customBack="parentMethod" ></navigation-bar>
 
 <view class="page-container">
-  <view class="header-section">
+  <view class="header-section {{showHeaderSearch ? 'header-section-show' : ''}}" style="top: {{navBarHeight}}px;">
     <t-search
       placeholder="搜索车位编号，如 A-88"
       shape="round"
@@ -10,6 +10,23 @@
       bind:submit="onSearch"
       bind:clear="onSearch"
     />
+  </view>
+
+  <view class="action-section">
+    <view class="action-card action-sale" bind:tap="onActionTap" data-type="1">
+      <view class="action-content">
+        <view class="action-title">出售</view>
+        <view class="action-desc">发布闲置车位</view>
+      </view>
+      <view class="action-icon">售</view>
+    </view>
+    <view class="action-card action-rent" bind:tap="onActionTap" data-type="2">
+      <view class="action-content">
+        <view class="action-title">出租</view>
+        <view class="action-desc">快速出租车位</view>
+      </view>
+      <view class="action-icon">租</view>
+    </view>
   </view>
 
   <view class="list-section">

@@ -35,6 +35,7 @@ const request = ({ url, method, data, header }) => {
   const dataType = wx.getStorageSync('dataType');
   if (token) {
     header['token'] = token;
+    header['Authorization'] = `Bearer ${token}`;
     header['dataType'] = dataType || 0;
   }
   wx.showLoading({
@@ -150,22 +151,56 @@ const _get = async ({
 const _upload = async ({
     url,
     data,
-    
+    name = 'file',
+    formData = {},
+    header = {},
   }) => {
-      return new Promise((rso,rej)=>{
+      const token = wx.getStorageSync('token');
+      const uploadHeader = {
+        ...header,
+      };
+      if (token) {
+        uploadHeader.token = token;
+        uploadHeader.Authorization = `Bearer ${token}`;
+      }
+
+      return new Promise((rso, rej) => {
         wx.uploadFile({
-            url: baseURL + url, 
+            url: baseURL + url,
             filePath: data,
-            name: 'file',
-            header:{
-                token:wx.getStorageSync('token')
-            },
+            name,
+            formData,
+            header: uploadHeader,
             success: function (uploadRes) {
-                let obj = JSON.parse(uploadRes.data)
-              rso(obj)
+              let obj = {};
+              try {
+                obj = JSON.parse(uploadRes.data || '{}');
+              } catch (error) {
+                wx.showToast({ title: '上传响应异常', icon: 'none' });
+                rej(error);
+                return;
+              }
+
+              if (uploadRes.statusCode === 401 || obj.error === 'UNAUTHENTICATED' || obj.code === 401) {
+                wx.redirectTo({ url: '/pages/login/index' });
+                rej(obj);
+                return;
+              }
+
+              if (uploadRes.statusCode < 200 || uploadRes.statusCode >= 300 || obj.success === false) {
+                wx.showToast({
+                  title: obj.message || CODE_MESSAGE[uploadRes.statusCode] || '上传失败',
+                  icon: 'none',
+                  duration: 2000,
+                });
+                rej(obj);
+                return;
+              }
+
+              rso(obj);
             },
             fail: function (uploadError) {
-              rej(uploadError)
+              rej(uploadError);
             },
           });
       })

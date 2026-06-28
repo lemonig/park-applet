@@ -1,2 +1,41 @@
-<!--pages/carport-form/index.wxml-->
-<text>pages/carport-form/index.wxml</text>
+<navigation-bar default-data="{{titleProps}}" back="{{true}}" is-cus-back="{{true}}" bind:customBack="onBack"></navigation-bar>
+
+<view class="form-page">
+  <view class="form-card">
+    <view class="card-title">基本信息</view>
+    <t-input label="车位编号" value="{{form.parkingNo}}" placeholder="如 B2-A088" data-field="parkingNo" bind:change="onInput" />
+    <t-input label="{{priceLabel}}" value="{{form.price}}" placeholder="请输入价格" type="digit" suffix="{{priceUnit}}" data-field="price" bind:change="onInput" />
+    <t-input label="联系电话" value="{{form.phone}}" placeholder="请输入联系电话" type="number" data-field="phone" bind:change="onInput" />
+  </view>
+
+  <view class="form-card">
+    <view class="card-title">位置信息</view>
+    <t-input label="小区" value="{{form.community}}" placeholder="请输入小区名称" data-field="community" bind:change="onInput" />
+    <t-input label="位置描述" value="{{form.positionDesc}}" placeholder="如 地下二层近电梯口" data-field="positionDesc" bind:change="onInput" />
+    <t-input label="车位规格" value="{{form.specs}}" placeholder="如 标准车位、靠墙、带地锁" data-field="specs" bind:change="onInput" />
+  </view>
+
+  <view class="form-card">
+    <view class="card-title">图片与说明</view>
+    <view class="upload-title">车位图片</view>
+    <view class="image-grid">
+      <block wx:for="{{images}}" wx:key="id">
+        <view class="image-item">
+          <image src="{{item.url}}" mode="aspectFill" bind:tap="previewImage" data-index="{{index}}" />
+          <view class="image-remove" bind:tap="removeImage" data-index="{{index}}">×</view>
+        </view>
+      </block>
+      <view wx:if="{{images.length < 6}}" class="image-add" bind:tap="chooseImages">
+        <view class="plus">+</view>
+        <view class="add-text">{{uploading ? '上传中' : '上传图片'}}</view>
+      </view>
+    </view>
+    <view class="upload-tip">最多上传6张，建议包含车位全景、编号、出入口</view>
+    <t-textarea value="{{form.description}}" placeholder="补充说明车位亮点、交易方式、可租/售时间等" maxlength="500" autosize data-field="description" bind:change="onInput" />
+  </view>
+
+  <view class="submit-spacer"></view>
+  <view class="submit-bar">
+    <t-button theme="primary" size="large" block loading="{{submitting}}" disabled="{{submitting || uploading}}" bind:tap="submitForm">发布{{typeText}}</t-button>
+  </view>
+</view>

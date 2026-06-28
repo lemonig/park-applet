@@ -1,1 +1,105 @@
-/* pages/carport-form/index.wxss */
+.form-page {
+  min-height: 100vh;
+  background-color: #f6f6f6;
+  padding: 24rpx 24rpx 160rpx;
+  box-sizing: border-box;
+}
+
+.form-card {
+  margin-bottom: 24rpx;
+  padding: 8rpx 0 16rpx;
+  background: #fff;
+  border-radius: 24rpx;
+  overflow: hidden;
+}
+
+.card-title {
+  padding: 28rpx 32rpx 12rpx;
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #222;
+}
+
+.upload-title {
+  padding: 16rpx 32rpx 20rpx;
+  font-size: 28rpx;
+  color: #333;
+}
+
+.image-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18rpx;
+  padding: 0 32rpx;
+}
+
+.image-item,
+.image-add {
+  position: relative;
+  width: 196rpx;
+  height: 196rpx;
+  border-radius: 16rpx;
+  overflow: hidden;
+  background: #f3f3f3;
+}
+
+.image-item image {
+  width: 100%;
+  height: 100%;
+}
+
+.image-remove {
+  position: absolute;
+  top: 8rpx;
+  right: 8rpx;
+  width: 40rpx;
+  height: 40rpx;
+  line-height: 36rpx;
+  text-align: center;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 34rpx;
+  background: rgba(0, 0, 0, 0.55);
+}
+
+.image-add {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 2rpx dashed #c9cdd4;
+  box-sizing: border-box;
+  color: #888;
+}
+
+.plus {
+  font-size: 56rpx;
+  line-height: 1;
+}
+
+.add-text {
+  margin-top: 12rpx;
+  font-size: 24rpx;
+}
+
+.upload-tip {
+  padding: 16rpx 32rpx 24rpx;
+  font-size: 24rpx;
+  color: #999;
+}
+
+.submit-spacer {
+  height: 1rpx;
+}
+
+.submit-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 20;
+  padding: 20rpx 24rpx calc(20rpx + env(safe-area-inset-bottom));
+  background: #fff;
+  box-shadow: 0 -6rpx 18rpx rgba(0, 0, 0, 0.06);
+  box-sizing: border-box;
+}
