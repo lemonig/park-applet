@@ -148,6 +148,38 @@ const _get = async ({
   return res;
 };
 
+const _put = async ({
+  url,
+  data,
+  header = {
+    'content-type': 'application/json',
+  },
+}) => {
+  let res = await request({
+    url,
+    data,
+    header,
+    method: 'PUT',
+  });
+  return res;
+};
+
+const _delete = async ({
+  url,
+  data,
+  header = {
+    'content-type': 'application/json',
+  },
+}) => {
+  let res = await request({
+    url,
+    data,
+    header,
+    method: 'DELETE',
+  });
+  return res;
+};
+
 const _upload = async ({
     url,
     data,
@@ -248,6 +280,8 @@ module.exports = {
   request,
   _post,
   _get,
+  _put,
+  _delete,
   _upload,
   baseURL:baseURL
 };

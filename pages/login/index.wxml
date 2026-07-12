@@ -1,23 +1,57 @@
 <navigation-bar default-data="{{titleProps}}" back="{{false}}"></navigation-bar>
 
 <view class="login-page" style="min-height: calc(100vh - {{navBarHeight}}px)">
-  <t-image class="logo" mode="aspectFill" src="/assets/imgs/bg_welcome.png" aria-label="欢迎" />
-  <view class="title">车位</view>
-  <view class="subtitle">便捷发布与查看车位信息</view>
+  <view class="login-bg"></view>
 
-  <view wx:if="{{loginMode === 'wechat'}}" class="login-panel">
-    <t-button theme="primary" size="large" block loading="{{loading}}" disabled="{{loading}}" bind:tap="handleWechatLogin">微信一键登录</t-button>
-    <view class="mode-switch" bind:tap="switchLoginMode">账号密码登录</view>
+  <view class="brand">
+    <t-image class="logo" mode="aspectFill" src="/assets/imgs/bg_welcome.png" aria-label="欢迎" />
+    <view class="title">车位</view>
+    <view class="subtitle">便捷发布与查看车位信息</view>
   </view>
 
-  <view wx:else class="login-panel">
-    <t-input value="{{form.account.value}}" placeholder="请输入账号" border="{{false}}" input-class="input" error="{{form.account.validate}}" error-message="{{form.account.errorText}}" bind:change="handleUsernameInput" />
-    <t-input value="{{form.password.value}}" placeholder="请输入密码" border="{{false}}" type="password" input-class="input" error="{{form.password.validate}}" error-message="{{form.password.errorText}}" bind:change="handlePasswordInput" />
-    <t-button custom-style="margin-top: 50rpx;" theme="primary" loading="{{loading}}" disabled="{{loading}}" block bind:tap="handleLogin">登录</t-button>
-    <view class="mode-switch" bind:tap="switchLoginMode">微信一键登录</view>
-  </view>
+  <view class="login-body">
+    <view wx:if="{{loginMode === 'wechat'}}" class="login-panel">
+      <view class="welcome">欢迎登录</view>
+      <view class="welcome-tip">登录后即可发布与管理你的车位</view>
 
-  <view wx:if="{{errMsg}}" class="error-message">{{errMsg}}</view>
+      <t-button class="primary-btn" theme="primary" size="large" block loading="{{loading}}" disabled="{{loading}}" bind:tap="handleWechatLogin">
+        <view class="wechat-btn-inner">
+          <t-icon name="logo-wechat-stroke" size="40rpx" />
+          <text>微信一键登录</text>
+        </view>
+      </t-button>
+
+      <view class="ghost-btn" bind:tap="switchLoginMode">账号密码登录</view>
+    </view>
+
+    <view wx:else class="login-panel">
+      <view class="welcome">账号登录</view>
+      <view class="welcome-tip">请输入账号与密码</view>
+
+      <view class="field">
+        <t-input value="{{form.account.value}}" placeholder="请输入账号" border="{{false}}" input-class="input" error="{{form.account.validate}}" error-message="{{form.account.errorText}}" bind:change="handleUsernameInput" />
+      </view>
+      <view class="field">
+        <t-input value="{{form.password.value}}" placeholder="请输入密码" border="{{false}}" type="password" input-class="input" error="{{form.password.validate}}" error-message="{{form.password.errorText}}" bind:change="handlePasswordInput" />
+      </view>
+
+      <t-button class="primary-btn" theme="primary" size="large" loading="{{loading}}" disabled="{{loading}}" block bind:tap="handleLogin">登录</t-button>
+
+      <view class="ghost-btn" bind:tap="switchLoginMode">微信一键登录</view>
+    </view>
+
+    <view wx:if="{{errMsg}}" class="error-message">{{errMsg}}</view>
+
+    <view class="agreement">
+      <t-checkbox value="agree" checked="{{agreed}}" bind:change="handleAgreeChange" />
+      <view class="agreement-text">
+        登录即代表同意
+        <text class="link">《用户协议》</text>
+        和
+        <text class="link">《隐私政策》</text>
+      </view>
+    </view>
+  </view>
 </view>
 
 <t-toast id="t-toast" />

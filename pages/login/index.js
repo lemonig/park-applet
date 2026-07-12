@@ -11,6 +11,7 @@ Page({
     },
     loginMode: 'wechat',
     loading: false,
+    agreed: false,
     form: {
       account: {
         label: '账号',
@@ -21,7 +22,7 @@ Page({
       },
       password: {
         label: '密码',
-        value: 'park!123',
+        value: 'park123',
         rules: 'isPassword',
         validate: false,
         errorText: '',
@@ -31,6 +32,16 @@ Page({
     errMsg: '',
   },
   onLoad() {},
+  handleAgreeChange(e) {
+    this.setData({ agreed: e.detail.checked });
+  },
+  checkAgreement() {
+    if (!this.data.agreed) {
+      wx.showToast({ title: '请先同意用户协议和隐私政策', icon: 'none' });
+      return false;
+    }
+    return true;
+  },
   switchLoginMode() {
     this.setData({
       loginMode: this.data.loginMode === 'wechat' ? 'password' : 'wechat',
@@ -46,6 +57,7 @@ Page({
   },
   handleWechatLogin() {
     if (this.data.loading) return;
+    if (!this.checkAgreement()) return;
     this.setData({ loading: true, errMsg: '' });
     wx.login({
       success: async ({ code }) => {
@@ -105,6 +117,7 @@ Page({
   },
   //  登录方法
   async handleLogin() {
+    if (!this.checkAgreement()) return;
     const params = this.formValidate();
     console.log(params);
     if (!params) return;

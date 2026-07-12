@@ -1,4 +1,4 @@
-import { listMarket } from '../../api/market';
+import { listMyMarket } from '../../api/market';
 import { detail as fetchUserDetail } from '../../api/user';
 
 const DEFAULT_AVATAR = 'https://tdesign.gtimg.com/miniprogram/images/avatar1.png';
@@ -76,7 +76,7 @@ Page({
   async fetchStats() {
     if (!this.data.isLogin) return;
     try {
-      const res = await listMarket({ pageNum: 1, pageSize: 1 });
+      const res = await listMyMarket({ pageNum: 1, pageSize: 1 });
       const total = res && res.page ? res.page.total : 0;
       this.setData({ 'stats.total': total });
     } catch (err) {

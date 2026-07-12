@@ -1,4 +1,4 @@
-<navigation-bar default-data="{{titleProps}}" bind:customBack="parentMethod" ></navigation-bar>
+<navigation-bar default-data="{{titleProps}}" back="{{false}}" bind:customBack="parentMethod" ></navigation-bar>
 
 <view class="page-container">
   <view class="header-section {{showHeaderSearch ? 'header-section-show' : ''}}" style="top: {{navBarHeight}}px;">

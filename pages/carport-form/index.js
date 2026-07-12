@@ -1,5 +1,6 @@
 import { addMarket } from '../../api/market';
 import { uploadFile } from '../../api/public';
+import { listDictItems } from '../../api/dict';
 
 const app = getApp();
 const MAX_IMAGE_COUNT = 6;
@@ -32,7 +33,9 @@ Page({
       positionDesc: '',
       specs: '',
       description: '',
+      buildings: [],
     },
+    buildingOptions: [],
     images: [],
     uploading: false,
     submitting: false,
@@ -48,6 +51,18 @@ Page({
     this.setType(type);
     this.fillUserPhone();
     this.fillLocation();
+    this.fetchBuildings();
+  },
+
+  async fetchBuildings() {
+    try {
+      const res = await listDictItems('ld_1');
+      if (res && res.success && Array.isArray(res.data)) {
+        this.setData({ buildingOptions: res.data });
+      }
+    } catch (err) {
+      // 静默失败，不影响表单
+    }
   },
 
   fillLocation() {
@@ -125,8 +140,20 @@ Page({
     });
   },
 
+  onToggleBuilding(e) {
+    const value = e.currentTarget.dataset.value;
+    const list = (this.data.form.buildings || []).slice();
+    const idx = list.indexOf(value);
+    if (idx > -1) {
+      list.splice(idx, 1);
+    } else {
+      list.push(value);
+    }
+    this.setData({ 'form.buildings': list });
+  },
+
   validateForm() {
-    const { form, type } = this.data;
+    const { form, type, priceLabel } = this.data;
     const priceReg = /^(?!0+(?:\.0{1,2})?$)\d{1,8}(\.\d{1,2})?$/;
     const phoneReg = /^1\d{10}$|^\d{7,20}$/;
 
@@ -139,14 +166,17 @@ Page({
     if (form.parkingNo.trim().length > 50) {
       return '车位编号不能超过50个字符';
     }
+    if (!String(form.price).trim()) {
+      return `请输入${priceLabel}`;
+    }
     if (!priceReg.test(String(form.price).trim())) {
       return '请输入正确价格，最多2位小数';
     }
+    if (!String(form.phone).trim()) {
+      return '请输入联系电话';
+    }
     if (!phoneReg.test(String(form.phone).trim())) {
       return '请输入正确联系电话';
-    }
-    if (!form.positionDesc.trim()) {
-      return '请输入位置描述';
     }
     if (form.description && form.description.length > 500) {
       return '详细说明不能超过500个字符';
@@ -167,6 +197,7 @@ Page({
       positionDesc: form.positionDesc.trim(),
       specs: form.specs.trim(),
       description: form.description.trim(),
+      buildings: (form.buildings || []).join(','),
       images: images.map((item) => ({ id: item.id, url: item.url })),
     };
   },

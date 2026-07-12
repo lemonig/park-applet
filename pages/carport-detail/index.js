@@ -1,5 +1,8 @@
 Page({
   data: {
+    titleProps: {
+      title: '车位详情',
+    },
     current: 0,
     // 轮播图数据：包含环境图、车位图、平面图
     swiperList: [

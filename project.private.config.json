@@ -3,7 +3,7 @@
   "projectname": "park-applet",
   "setting": {
     "compileHotReLoad": true,
-    "urlCheck": true,
+    "urlCheck": false,
     "autoAudits": false,
     "bigPackageSizeSupport": true,
     "skylineRenderEnable": false,

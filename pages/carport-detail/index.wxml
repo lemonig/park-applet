@@ -1,3 +1,5 @@
+<navigation-bar default-data="{{titleProps}}" back="{{true}}"></navigation-bar>
+
 <view class="page-container">
   
   <t-swiper

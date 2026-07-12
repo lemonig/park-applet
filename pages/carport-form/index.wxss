@@ -26,6 +26,25 @@
   color: #333;
 }
 
+.form-cell-note {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.form-subtitle {
+  padding: 20rpx 32rpx 8rpx;
+  font-size: 28rpx;
+  color: #333;
+}
+
+.tag-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+  padding: 8rpx 32rpx 24rpx;
+}
+
 .image-grid {
   display: flex;
   flex-wrap: wrap;
