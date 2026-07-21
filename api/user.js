@@ -8,14 +8,6 @@ export function wxLogin(data) {
   });
 }
 
-// 兼容旧调用：账号密码登录（小程序目前未使用）
-export function login(data) {
-  return _post({
-    url: `/api/wechat/auth/mini-login`,
-    data,
-  });
-}
-
 // 登出
 export function logout() {
   return _post({

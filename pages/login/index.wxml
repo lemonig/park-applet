@@ -10,7 +10,7 @@
   </view>
 
   <view class="login-body">
-    <view wx:if="{{loginMode === 'wechat'}}" class="login-panel">
+    <view class="login-panel">
       <view class="welcome">欢迎登录</view>
       <view class="welcome-tip">登录后即可发布与管理你的车位</view>
 
@@ -20,24 +20,6 @@
           <text>微信一键登录</text>
         </view>
       </t-button>
-
-      <view class="ghost-btn" bind:tap="switchLoginMode">账号密码登录</view>
-    </view>
-
-    <view wx:else class="login-panel">
-      <view class="welcome">账号登录</view>
-      <view class="welcome-tip">请输入账号与密码</view>
-
-      <view class="field">
-        <t-input value="{{form.account.value}}" placeholder="请输入账号" border="{{false}}" input-class="input" error="{{form.account.validate}}" error-message="{{form.account.errorText}}" bind:change="handleUsernameInput" />
-      </view>
-      <view class="field">
-        <t-input value="{{form.password.value}}" placeholder="请输入密码" border="{{false}}" type="password" input-class="input" error="{{form.password.validate}}" error-message="{{form.password.errorText}}" bind:change="handlePasswordInput" />
-      </view>
-
-      <t-button class="primary-btn" theme="primary" size="large" loading="{{loading}}" disabled="{{loading}}" block bind:tap="handleLogin">登录</t-button>
-
-      <view class="ghost-btn" bind:tap="switchLoginMode">微信一键登录</view>
     </view>
 
     <view wx:if="{{errMsg}}" class="error-message">{{errMsg}}</view>
