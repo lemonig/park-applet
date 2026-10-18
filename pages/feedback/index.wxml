@@ -1,0 +1,60 @@
+<navigation-bar default-data="{{titleProps}}" back="{{true}}" is-cus-back="{{true}}" bind:customBack="onBack"></navigation-bar>
+
+<view class="form-page">
+  <view class="type-banner">
+    <view class="type-title">意见反馈</view>
+    <view class="type-sub">你的每条建议我们都会认真对待</view>
+  </view>
+
+  <view class="form-card">
+    <view class="card-header">
+      <view class="card-icon">问题类型</view>
+      <view class="card-title">选择遇到的问题或建议类型</view>
+    </view>
+    <view class="radio-list">
+      <t-radio-group value="{{form.type}}" bind:change="onTypeChange">
+        <t-radio wx:for="{{typeOptions}}" wx:key="value" value="{{item.value}}" label="{{item.label}}" borderless />
+      </t-radio-group>
+    </view>
+  </view>
+
+  <view class="form-card">
+    <view class="card-header">
+      <view class="card-icon">问题描述</view>
+      <view class="card-title">10-500 字，描述越具体越容易解决</view>
+    </view>
+    <view class="content-area">
+      <t-textarea value="{{form.content}}" placeholder="请描述遇到的问题或想提的建议，如：在哪个功能、发生了什么、期望的表现" maxlength="{{500}}" indicator autosize data-field="content" bind:change="onInput" />
+    </view>
+  </view>
+
+  <view class="form-card">
+    <view class="card-header">
+      <view class="card-icon">截图与联系方式</view>
+      <view class="card-title">选填，便于我们定位与回访</view>
+    </view>
+    <view class="upload-area">
+      <view class="image-grid">
+        <block wx:for="{{images}}" wx:key="id">
+          <view class="image-item">
+            <image src="{{item.url}}" mode="aspectFill" bind:tap="previewImage" data-index="{{index}}" />
+            <view class="image-remove" bind:tap="removeImage" data-index="{{index}}">×</view>
+          </view>
+        </block>
+        <view wx:if="{{images.length < 4}}" class="image-add" bind:tap="chooseImages">
+          <view class="plus">+</view>
+          <view class="add-text">{{uploading ? '上传中' : '上传截图'}}</view>
+        </view>
+      </view>
+      <view class="upload-tip">最多上传4张截图</view>
+    </view>
+    <t-cell title="联系方式" bordered="{{false}}" note-class="form-cell-note" t-class-title="form-cell-title">
+      <t-input slot="note" borderless align="right" value="{{form.contact}}" placeholder="选填，方便我们回访" type="number" data-field="contact" bind:change="onInput" />
+    </t-cell>
+  </view>
+
+  <view class="submit-spacer"></view>
+  <view class="submit-bar">
+    <t-button theme="primary" size="large" block loading="{{submitting}}" disabled="{{submitting || uploading}}" bind:tap="submitForm">提交反馈</t-button>
+  </view>
+</view>

@@ -4,7 +4,9 @@
     "pages/carport-detail/index",
     "pages/login/index",
     "pages/user/index",
-    "pages/carport-form/index"
+    "pages/carport-form/index",
+    "pages/my-market/index",
+    "pages/feedback/index"
   ],
   "window": {
     "backgroundTextStyle": "light",

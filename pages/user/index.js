@@ -19,7 +19,8 @@ Page({
     menuList: [
       { key: 'publishSale', title: '发布出售车位', icon: 'add-circle', url: '/pages/carport-form/index?type=1' },
       { key: 'publishRent', title: '发布出租车位', icon: 'add-circle', url: '/pages/carport-form/index?type=2' },
-      { key: 'my', title: '我的发布', icon: 'view-list', url: '/pages/carport-form/index?mine=1' },
+      { key: 'my', title: '我的发布', icon: 'view-list', url: '/pages/my-market/index' },
+      { key: 'feedback', title: '意见反馈', icon: 'chat', url: '/pages/feedback/index' },
       { key: 'service', title: '联系客服', icon: 'service', action: 'contactService' },
       { key: 'about', title: '关于我们', icon: 'info-circle', action: 'showAbout' },
     ],
@@ -76,9 +77,16 @@ Page({
   async fetchStats() {
     if (!this.data.isLogin) return;
     try {
-      const res = await listMyMarket({ pageNum: 1, pageSize: 1 });
-      const total = res && res.page ? res.page.total : 0;
-      this.setData({ 'stats.total': total });
+      const [allRes, pendingRes, approvedRes] = await Promise.all([
+        listMyMarket({ pageNum: 1, pageSize: 1 }),
+        listMyMarket({ pageNum: 1, pageSize: 1, status: 0 }),
+        listMyMarket({ pageNum: 1, pageSize: 1, status: 1 }),
+      ]);
+      this.setData({
+        'stats.total': allRes && allRes.page ? allRes.page.total : 0,
+        'stats.pending': pendingRes && pendingRes.page ? pendingRes.page.total : 0,
+        'stats.approved': approvedRes && approvedRes.page ? approvedRes.page.total : 0,
+      });
     } catch (err) {
       // ignore
     }
@@ -122,7 +130,7 @@ Page({
 
   // 未登录拦截（部分菜单允许免登录浏览，这里发布与我的需登录）
   requireLogin(key) {
-    const needLoginKeys = ['publishSale', 'publishRent', 'my', 'profile'];
+    const needLoginKeys = ['publishSale', 'publishRent', 'my', 'profile', 'feedback'];
     if (needLoginKeys.includes(key) && !this.data.isLogin) {
       wx.showToast({ title: '请先登录', icon: 'none' });
       setTimeout(() => this.goLogin(), 600);
@@ -143,7 +151,7 @@ Page({
   // 统计点击 -> 跳「我的发布」
   onStatsTap() {
     if (!this.requireLogin('my')) return;
-    wx.navigateTo({ url: '/pages/carport-form/index?mine=1' });
+    wx.navigateTo({ url: '/pages/my-market/index' });
   },
 
   // 退出登录

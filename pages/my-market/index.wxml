@@ -1,0 +1,47 @@
+<navigation-bar default-data="{{titleProps}}" back="{{true}}"></navigation-bar>
+
+<view class="my-market-page">
+  <view class="tabs-wrap">
+    <t-tabs value="{{activeTab}}" bind:change="onTabChange" theme="tag">
+      <t-tab-panel wx:for="{{tabs}}" wx:key="key" label="{{item.label}}" value="{{item.key}}" />
+    </t-tabs>
+  </view>
+
+  <view class="list-section">
+    <block wx:for="{{pageData}}" wx:key="id">
+      <view class="market-card" bind:tap="onCardTap" data-id="{{item.id}}">
+        <view class="card-left">
+          <t-image src="{{item.imageUrl}}" width="200rpx" height="200rpx" shape="round" mode="aspectFill" aria-label="车位图片" />
+        </view>
+        <view class="card-right">
+          <view class="card-header">
+            <text class="parking-number">{{item.parkingNo}}</text>
+            <t-tag variant="light" theme="{{item.statusTheme}}" size="small">{{item.statusText}}</t-tag>
+          </view>
+          <view class="card-tags">
+            <t-tag wx:if="{{item.specs}}" class="margin-tag" variant="light" theme="primary" size="small">{{item.specs}}</t-tag>
+          </view>
+          <view class="card-footer">
+            <view class="price-box">
+              <text class="currency">¥</text>
+              <text class="amount">{{item.priceText}}</text>
+              <text class="unit">{{item.unit}}</text>
+            </view>
+            <view class="card-actions" catch:tap="noop">
+              <t-button size="small" theme="light" bind:tap="onEdit" data-index="{{index}}">编辑</t-button>
+              <t-button size="small" theme="light" variant="outline" bind:tap="onDelete" data-index="{{index}}">撤回</t-button>
+            </view>
+          </view>
+          <view wx:if="{{item.auditRemark}}" class="reject-remark">驳回原因：{{item.auditRemark}}</view>
+        </view>
+      </view>
+    </block>
+
+    <t-empty wx:if="{{!loading && pageData.length === 0}}" description="暂无发布记录" />
+
+    <view wx:if="{{loading}}" class="list-tip">
+      <t-loading theme="circular" size="40rpx" text="加载中..." inherit-color />
+    </view>
+    <view wx:elif="{{isAllData && pageData.length > 0}}" class="list-tip">没有更多了</view>
+  </view>
+</view>
