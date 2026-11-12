@@ -1,80 +1,87 @@
 <navigation-bar default-data="{{titleProps}}" back="{{true}}"></navigation-bar>
 
-<view class="page-container">
-  
-  <t-swiper
-    current="{{current}}"
-    autoplay="{{false}}"
-    navigation="{{ { type: 'fraction' } }}"
-    list="{{swiperList}}"
-    height="500rpx"
-  />
+<view class="page-container" wx:if="{{loading}}">
+  <t-skeleton theme="image" />
+  <view class="info-card">
+    <t-skeleton />
+  </view>
+</view>
 
-  <view class="info-card header-card">
-    <view class="price-row">
-      <view class="price-wrapper">
-        <text class="currency">¥</text>
-        <text class="amount">{{detail.price}}</text>
-        <text class="unit">/月 (押一付三)</text>
+<block wx:elif="{{detail.id}}">
+  <view class="page-container">
+    <view class="swiper-wrap" wx:if="{{swiperList.length}}">
+      <t-swiper
+        current="{{current}}"
+        autoplay="{{false}}"
+        navigation="{{ { type: 'fraction' } }}"
+        list="{{swiperList}}"
+        height="500rpx"
+      />
+    </view>
+
+    <view class="info-card header-card">
+      <view class="price-row">
+        <view class="price-wrapper">
+          <text class="currency">¥</text>
+          <text class="amount">{{detail.priceText}}</text>
+          <text class="unit">{{detail.unit}}</text>
+        </view>
+        <t-tag wx:if="{{statusText}}" variant="light" theme="{{statusTheme}}" shape="mark">{{statusText}}</t-tag>
       </view>
-      <t-tag variant="light" theme="success" shape="mark">随时起租</t-tag>
-    </view>
-    
-    <view class="title-row">
-      <text class="main-title">{{detail.zone}} - {{detail.number}} 号车位</text>
-    </view>
-    
-    <view class="tags-row">
-      <t-tag class="tag-item" variant="outline" theme="primary" size="small">独立车位</t-tag>
-      <t-tag class="tag-item" variant="outline" theme="default" size="small">B2层直达</t-tag>
-    </view>
-  </view>
 
-  <view class="info-card">
-    <view class="card-title">基本信息</view>
-    <t-cell-group theme="card">
-      <t-cell title="所属楼层" note="{{detail.floor}}" leftIcon="layers" />
-      <t-cell title="规格" note="200cm*300cm" leftIcon="layers" />
-      <t-cell title="地锁情况" note="配备智能遥控地锁" leftIcon="lock-on" />
-      <t-cell title="入场方式" note="车牌自动识别" leftIcon="scan" />
-    </t-cell-group>
-  </view>
+      <view class="title-row">
+        <text class="main-title">{{detail.parkingNo || '-'}} 号车位</text>
+      </view>
 
-  <view class="info-card">
-    <view class="card-title">配套设施</view>
-    <t-grid column="{{4}}" border="{{false}}">
-      <t-grid-item text="24h监控" icon="video" />
-      <t-grid-item text="充足照明" icon="brightness" />
-      <t-grid-item text="定期保洁" icon="user-avatar" />
-      <t-grid-item text="消防喷淋" icon="error-circle" />
-    </t-grid>
-  </view>
+      <view class="tags-row" wx:if="{{detail.specs || detail.typeText || detail.buildings.length}}">
+        <t-tag class="tag-item" variant="outline" theme="primary" size="small">{{detail.typeText}}</t-tag>
+        <t-tag wx:if="{{detail.specs}}" class="tag-item" variant="outline" theme="default" size="small">{{detail.specs}}</t-tag>
+        <t-tag wx:for="{{detail.buildingsText}}" wx:key="*this" class="tag-item" variant="light" theme="primary" size="small">{{item}}</t-tag>
+      </view>
+    </view>
 
-  <view class="info-card">
-    <view class="card-title">租赁须知</view>
-    <view class="text-block">
-      1. 最短租期为3个月，支持长租优惠。<br/>
-      2. 预订成功后请在24小时内联系管理员录入车牌。<br/>
-      3. 车位内严禁堆放杂物，违者将由物业清理。
+    <view class="info-card">
+      <view class="card-title">基本信息</view>
+      <t-cell-group theme="card">
+        <t-cell title="小区" note="{{detail.community || '-'}}" leftIcon="home" />
+        <t-cell title="位置" note="{{detail.positionDesc || '-'}}" leftIcon="layers" />
+        <t-cell title="规格" note="{{detail.specs || '-'}}" leftIcon="layers" />
+        <t-cell title="联系电话" note="{{detail.phone || '-'}}" leftIcon="phone" />
+        <t-cell wx:if="{{detail.auditRemark}}" title="驳回原因" note="{{detail.auditRemark}}" leftIcon="error-circle" note-class="reject-note" />
+      </t-cell-group>
+    </view>
+
+    <view class="info-card" wx:if="{{detail.description}}">
+      <view class="card-title">详细说明</view>
+      <view class="text-block">{{detail.description}}</view>
+    </view>
+
+    <view class="info-card">
+      <view class="card-title">车位照片</view>
+      <view class="photo-grid">
+        <image
+          wx:for="{{swiperList}}"
+          wx:key="*this"
+          class="photo-item"
+          src="{{item}}"
+          mode="aspectFill"
+          bind:tap="onPreview"
+          data-index="{{index}}" />
+      </view>
+    </view>
+
+    <view class="bottom-spacer"></view>
+
+    <view class="bottom-bar">
+      <view class="btn-actions">
+        <t-button theme="light" content="联系房东" bind:tap="onCall" />
+        <t-button theme="primary" content="立即预订" bind:tap="onBook" />
+      </view>
     </view>
   </view>
-  
+</block>
+
+<view wx:else class="page-container">
+  <t-empty description="车位信息不存在" />
   <view class="bottom-spacer"></view>
-
-  <view class="bottom-bar">
-    <view class="icon-actions">
-      <view class="action-item">
-        <t-icon name="heart" size="48rpx" />
-        <text>收藏</text>
-      </view>
-      <view class="action-item">
-        <t-icon name="share" size="48rpx" />
-        <text>分享</text>
-      </view>
-    </view>
-    <view class="btn-actions">
-      <t-button theme="light" content="联系房东" size="large" />
-      <t-button theme="primary" content="立即预订" size="large" />
-    </view>
-  </view>
 </view>
