@@ -1,5 +1,5 @@
 // app.js
-import {wxLogin  } from "./api/user";
+import { wxLogin } from "./api/user";
 import Monitor from './utils/monitor';
 App(
   Monitor.hookApp({
@@ -22,8 +22,33 @@ App(
       that.globalData.menuRight = systemInfo.screenWidth - menuButtonInfo.right;
       that.globalData.menuTop = menuButtonInfo.top;
       that.globalData.menuHeight = menuButtonInfo.height;
-  
-    
+
+      // 静默登录 / 续期
+      this.silentLogin();
+
+    },
+    // 静默登录：wx.login 换 code，携带旧 token 续期，成功后写入本地
+    silentLogin() {
+      const oldToken = wx.getStorageSync('token') || '';
+      wx.login({
+        success: async ({ code }) => {
+          if (!code) return;
+          try {
+            const res = await wxLogin({ code, token: oldToken });
+            if (res && res.success !== false && res.data && res.data.token) {
+              wx.setStorageSync('token', res.data.token);
+              wx.setStorageSync('userInfo', res.data);
+              this.globalData.userInfo = res.data;
+            }
+          } catch (err) {
+            // 静默失败，不打断用户
+            console.log('silent login failed', err);
+          }
+        },
+        fail() {
+          // 忽略
+        },
+      });
     },
     globalData: {
       userInfo: null,

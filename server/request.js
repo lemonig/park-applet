@@ -27,16 +27,19 @@ const CODE_MESSAGE = {
   504: '网关超时',
 };
 
-const request = ({ url, method, data, header }) => {
+const request = ({ url, method, data, header, retried = false }) => {
     const startTime = new Date().getTime();
+  //  原始请求体（success 回调里 data 会被响应体覆盖，重试需用它）
+  const requestData = data;
   //  加载请求拦截器
   //  token
   const token = wx.getStorageSync('token');
   const dataType = wx.getStorageSync('dataType');
+  const requestHeader = { ...header };
   if (token) {
-    header['token'] = token;
-    header['Authorization'] = `Bearer ${token}`;
-    header['dataType'] = dataType || 0;
+    requestHeader['token'] = token;
+    requestHeader['Authorization'] = `Bearer ${token}`;
+    requestHeader['dataType'] = dataType || 0;
   }
   wx.showLoading({
     title: '请稍等...',
@@ -46,35 +49,68 @@ const request = ({ url, method, data, header }) => {
     wx.request({
       url: baseURL + url,
       method,
-      header,
+      header: requestHeader,
       data,
       timeout: 30000,
       // enableHttp2:true,
-      success({ data }) {
+      success({ data, statusCode, header: respHeader }) {
         // reportApiMonitorSuccess(url, data.code,startTime,data.message);
         wx.hideLoading();
         // 若data.code存在，覆盖默认code
         let code = data && data[statusName] ? data[statusName] : 9999;
         if (codeVerificationArray.indexOf(data[statusName]) + 1) code = 200;
+
+        // 401 / UNAUTHENTICATED / code=401 → 登录失效
+        const unauthorized = statusCode === 401
+          || (data && data.error === 'UNAUTHENTICATED')
+          || code === 401;
+
+        if (unauthorized) {
+          // 清除本地登录态
+          wx.removeStorageSync('token');
+          wx.removeStorageSync('userInfo');
+          if (!retried) {
+            // 静默重登：wx.login 换新 code → 后端 mini-login 换新 token，成功后重试原请求（仅重试一次）
+            silentRelogin().then((ok) => {
+              if (ok) {
+                resolve(request({ url, method, data: requestData, header, retried: true }));
+              } else {
+                redirectToLogin();
+                resolve(data);
+              }
+            }).catch(() => {
+              redirectToLogin();
+              resolve(data);
+            });
+          } else {
+            // 已重试过一次仍 401 → 跳登录页
+            redirectToLogin();
+            resolve(data);
+          }
+          return;
+        }
+
+        // 自动续期：后端在剩余时长低于阈值时通过响应头 X-New-Token 下发新 token
+        if (respHeader && respHeader['X-New-Token']) {
+          wx.setStorageSync('token', respHeader['X-New-Token']);
+          const userInfo = wx.getStorageSync('userInfo');
+          if (userInfo) {
+            userInfo.token = respHeader['X-New-Token'];
+            wx.setStorageSync('userInfo', userInfo);
+          }
+        }
+
         switch (code) {
           case 200:
             //  请求成功
             resolve(data);
             break;
 
-          case 401:
-            wx.redirectTo({
-              url: '/pages/login/index',
-            });
-            break;
-
           default:
             //  请求异常
             if (data.error === "UNAUTHENTICATED") {
               //  登录失效处理
-              wx.redirectTo({
-                url: '/pages/login/index',
-              });
+              redirectToLogin();
             }
             if(!data.success){
             const errMsg = `${
@@ -114,6 +150,50 @@ const request = ({ url, method, data, header }) => {
     });
   });
 };
+
+// 静默重登：wx.login 拿新 code → 调后端 mini-login 换新 token，成功写回本地
+function silentRelogin() {
+  return new Promise((resolve) => {
+    wx.login({
+      success: ({ code }) => {
+        if (!code) {
+          resolve(false);
+          return;
+        }
+        wx.request({
+          url: baseURL + '/api/wechat/auth/mini-login',
+          method: 'POST',
+          data: { code },
+          header: { 'content-type': 'application/json' },
+          timeout: 30000,
+          success(resp) {
+            const body = resp.data || {};
+            if (resp.statusCode === 200 && body.code === 200 && body.data && body.data.token) {
+              wx.setStorageSync('token', body.data.token);
+              wx.setStorageSync('userInfo', body.data);
+              resolve(true);
+            } else {
+              resolve(false);
+            }
+          },
+          fail() {
+            resolve(false);
+          },
+        });
+      },
+      fail() {
+        resolve(false);
+      },
+    });
+  });
+}
+
+// 跳转登录页
+function redirectToLogin() {
+  wx.redirectTo({
+    url: '/pages/login/index',
+  });
+}
 
 const _post = async ({
   url,
@@ -214,7 +294,10 @@ const _upload = async ({
               }
 
               if (uploadRes.statusCode === 401 || obj.error === 'UNAUTHENTICATED' || obj.code === 401) {
-                wx.redirectTo({ url: '/pages/login/index' });
+                // 上传类请求不做自动重登重试（避免重复上传副作用），直接跳登录页
+                wx.removeStorageSync('token');
+                wx.removeStorageSync('userInfo');
+                redirectToLogin();
                 rej(obj);
                 return;
               }
