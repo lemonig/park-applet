@@ -1,4 +1,4 @@
-import { addMarket } from '../../api/market';
+import { addMarket, updateMarket, detailMarket } from '../../api/market';
 import { uploadFile } from '../../api/public';
 import { listDictItems } from '../../api/dict';
 
@@ -23,6 +23,7 @@ Page({
     typeText: '出售',
     priceLabel: '出售价格',
     priceUnit: '元',
+    isEdit: false,
     form: {
       parkingNo: '',
       price: '',
@@ -49,16 +50,63 @@ Page({
       return;
     }
     this.setType(type);
-    this.fillUserPhone();
-    this.fillLocation();
-    this.fetchBuildings();
+
+    const id = options.id;
+    if (id) {
+      this.editingId = id;
+      this.setData({
+        isEdit: true,
+        'titleProps.title': type === 2 ? '编辑出租车位' : '编辑出售车位',
+      });
+      this.fetchDetail(id);
+    } else {
+      this.fillUserPhone();
+      this.fillLocation();
+      this.fetchBuildings();
+    }
+  },
+
+  // 编辑态：拉取详情回填
+  async fetchDetail(id) {
+    try {
+      const res = await detailMarket(id);
+      const item = res && res.success !== false ? res.data : null;
+      if (!item) {
+        wx.showToast({ title: '获取车位信息失败', icon: 'none' });
+        return;
+      }
+      const buildings = item.buildings ? String(item.buildings).split(',').map((v) => v.trim()).filter(Boolean) : [];
+      this.setData({
+        form: {
+          parkingNo: item.parkingNo || '',
+          price: item.price != null ? String(item.price) : '',
+          phone: item.phone || '',
+          city: item.city || '',
+          area: item.area || '',
+          community: item.community || '',
+          positionDesc: item.positionDesc || '',
+          specs: item.specs || '',
+          description: item.description || '',
+          buildings,
+        },
+        images: (item.images || []).map((img) => ({ id: img.id, url: img.url })),
+      });
+      this.fetchBuildings();
+    } catch (err) {
+      wx.showToast({ title: '获取车位信息失败', icon: 'none' });
+    }
   },
 
   async fetchBuildings() {
     try {
       const res = await listDictItems('ld_1');
       if (res && res.success && Array.isArray(res.data)) {
-        this.setData({ buildingOptions: res.data });
+        const selected = this.data.form.buildings || [];
+        const options = res.data.map((it) => ({
+          ...it,
+          selected: selected.indexOf(it.value) > -1,
+        }));
+        this.setData({ buildingOptions: options });
       }
     } catch (err) {
       // 静默失败，不影响表单
@@ -147,9 +195,18 @@ Page({
     if (idx > -1) {
       list.splice(idx, 1);
     } else {
+      if (list.length >= 3) {
+        wx.showToast({ title: '最多选择3个楼栋', icon: 'none' });
+        return;
+      }
       list.push(value);
     }
     this.setData({ 'form.buildings': list });
+    const options = this.data.buildingOptions.map((it) => ({
+      ...it,
+      selected: list.indexOf(it.value) > -1,
+    }));
+    this.setData({ buildingOptions: options });
   },
 
   validateForm() {
@@ -271,13 +328,19 @@ Page({
 
     this.setData({ submitting: true });
     try {
-      const res = await addMarket(this.buildPayload());
+      const payload = this.buildPayload();
+      let res;
+      if (this.editingId) {
+        res = await updateMarket(this.editingId, payload);
+      } else {
+        res = await addMarket(payload);
+      }
       if (res && res.success !== false) {
-        wx.showToast({ title: '发布成功', icon: 'success' });
+        wx.showToast({ title: this.editingId ? '保存成功' : '发布成功', icon: 'success' });
         setTimeout(() => wx.navigateBack({ delta: 1 }), 800);
       }
     } catch (err) {
-      wx.showToast({ title: '发布失败', icon: 'none' });
+      wx.showToast({ title: this.editingId ? '保存失败' : '发布失败', icon: 'none' });
     } finally {
       this.setData({ submitting: false });
     }

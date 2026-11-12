@@ -61,6 +61,4 @@ Page({
       },
     });
   },
-  getPhoneNumber(e) {
-  },
 });
