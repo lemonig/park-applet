@@ -1,7 +1,16 @@
 import { listMyMarket } from '../../api/market';
-import { detail as fetchUserDetail } from '../../api/user';
+import { detail as fetchUserDetail, update as updateUserProfile } from '../../api/user';
+import { uploadFile } from '../../api/public';
 
-const DEFAULT_AVATAR = 'https://tdesign.gtimg.com/miniprogram/images/avatar1.png';
+// 默认头像：本地处理的跑车图（512x512，约 16KB）
+const DEFAULT_AVATAR = '/assets/imgs/avatar-default.jpg';
+
+// 由用户信息推导头像区显示数据，无头像时回落到默认图
+function buildAvatarData(userInfo) {
+  return {
+    avatar: (userInfo && userInfo.avatar) || DEFAULT_AVATAR,
+  };
+}
 
 Page({
   data: {
@@ -10,15 +19,14 @@ Page({
     },
     isLogin: false,
     userInfo: null,
-    avatar: DEFAULT_AVATAR,
+    ...buildAvatarData(null),
+    avatarSaving: false,
     stats: {
       total: 0,
       pending: 0,
       approved: 0,
     },
     menuList: [
-      { key: 'publishSale', title: '发布出售车位', icon: 'add-circle', url: '/pages/carport-form/index?type=1' },
-      { key: 'publishRent', title: '发布出租车位', icon: 'add-circle', url: '/pages/carport-form/index?type=2' },
       { key: 'my', title: '我的发布', icon: 'view-list', url: '/pages/my-market/index' },
       { key: 'feedback', title: '意见反馈', icon: 'chat', url: '/pages/feedback/index' },
       { key: 'service', title: '联系客服', icon: 'service', action: 'contactService' },
@@ -41,14 +49,14 @@ Page({
       this.setData({
         isLogin: true,
         userInfo,
-        avatar: userInfo.avatar || DEFAULT_AVATAR,
+        ...buildAvatarData(userInfo),
       });
       return userInfo;
     }
     this.setData({
       isLogin: false,
       userInfo: null,
-      avatar: DEFAULT_AVATAR,
+      ...buildAvatarData(null),
       stats: { total: 0, pending: 0, approved: 0 },
     });
     return null;
@@ -65,11 +73,44 @@ Page({
         wx.setStorageSync('userInfo', merged);
         this.setData({
           userInfo: merged,
-          avatar: merged.avatar || DEFAULT_AVATAR,
+          ...buildAvatarData(merged),
         });
       }
     } catch (err) {
       // 静默失败，使用本地缓存
+    }
+  },
+
+  // 用户选择了微信头像：上传后持久化
+  async onChooseAvatar(e) {
+    const filePath = e && e.detail && e.detail.avatarUrl;
+    if (!filePath || this.data.avatarSaving) return;
+    this.setData({ avatarSaving: true });
+    wx.showLoading({ title: '保存中', mask: true });
+    try {
+      const up = await uploadFile(filePath);
+      const url = up && up.data && up.data.url;
+      if (!url) {
+        wx.showToast({ title: '头像上传失败', icon: 'none' });
+        return;
+      }
+      const res = await updateUserProfile({ avatar: url });
+      if (res && res.success !== false) {
+        const merged = { ...this.data.userInfo, avatar: url };
+        wx.setStorageSync('userInfo', merged);
+        this.setData({
+          userInfo: merged,
+          ...buildAvatarData(merged),
+        });
+        wx.showToast({ title: '头像已更新', icon: 'success' });
+      } else {
+        wx.showToast({ title: '头像保存失败', icon: 'none' });
+      }
+    } catch (err) {
+      wx.showToast({ title: '头像保存失败', icon: 'none' });
+    } finally {
+      wx.hideLoading();
+      this.setData({ avatarSaving: false });
     }
   },
 
@@ -128,9 +169,9 @@ Page({
     }
   },
 
-  // 未登录拦截（部分菜单允许免登录浏览，这里发布与我的需登录）
+  // 未登录拦截（部分菜单允许免登录浏览）
   requireLogin(key) {
-    const needLoginKeys = ['publishSale', 'publishRent', 'my', 'profile', 'feedback'];
+    const needLoginKeys = ['my', 'profile', 'feedback'];
     if (needLoginKeys.includes(key) && !this.data.isLogin) {
       wx.showToast({ title: '请先登录', icon: 'none' });
       setTimeout(() => this.goLogin(), 600);
@@ -147,6 +188,9 @@ Page({
     }
     wx.showToast({ title: '资料编辑功能开发中', icon: 'none' });
   },
+
+  // 阻止头像按钮的 tap 冒泡到资料区
+  noop() {},
 
   // 统计点击 -> 跳「我的发布」
   onStatsTap() {
@@ -165,7 +209,7 @@ Page({
       'logoutDialog.visible': false,
       isLogin: false,
       userInfo: null,
-      avatar: DEFAULT_AVATAR,
+      ...buildAvatarData(null),
       stats: { total: 0, pending: 0, approved: 0 },
     });
     wx.showToast({ title: '已退出登录', icon: 'success' });

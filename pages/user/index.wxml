@@ -1,11 +1,23 @@
 <navigation-bar default-data="{{titleProps}}"></navigation-bar>
 
 <view class="user-page">
-  <!-- 顶部资料区 -->
+  <!-- 顶部资料区：微信「我的」白底样式 -->
   <view class="profile-card" bind:tap="onProfileTap">
-    <view class="profile-bg"></view>
     <view class="profile-content">
-      <t-avatar image="{{avatar}}" size="large" />
+      <!-- 登录态：点头像可选微信头像 -->
+      <button
+        wx:if="{{isLogin}}"
+        class="avatar-btn"
+        open-type="chooseAvatar"
+        bind:chooseavatar="onChooseAvatar"
+        catch:tap="noop"
+      >
+        <image class="avatar-img" src="{{avatar}}" mode="aspectFill" />
+      </button>
+      <!-- 未登录：默认头像 -->
+      <view wx:else class="avatar-btn">
+        <image class="avatar-img" src="{{avatar}}" mode="aspectFill" />
+      </view>
       <view class="profile-info">
         <block wx:if="{{isLogin}}">
           <view class="nickname">{{userInfo.nickname || userInfo.name || '未设置昵称'}}</view>
@@ -13,13 +25,14 @@
             <text wx:if="{{userInfo.mobile}}" class="mobile">{{userInfo.mobile}}</text>
             <text wx:else class="mobile placeholder">未绑定手机号</text>
           </view>
+          <view class="avatar-hint">点头像可换微信头像</view>
         </block>
         <block wx:else>
           <view class="nickname">点击登录</view>
           <view class="sub placeholder">登录后查看更多内容</view>
         </block>
       </view>
-      <t-icon name="chevron-right" size="40rpx" color="#fff" />
+      <t-icon name="chevron-right" size="40rpx" color="rgba(0,0,0,0.3)" />
     </view>
   </view>
 
@@ -57,10 +70,8 @@
     />
   </t-cell-group>
 
-  <!-- 退出登录 -->
-  <view wx:if="{{isLogin}}" class="logout-wrap">
-    <t-button theme="light" block size="large" bind:tap="onLogoutTap">退出登录</t-button>
-  </view>
+  <!-- 退出登录：微信风红色文字行 -->
+  <view wx:if="{{isLogin}}" class="logout-cell" hover-class="cell-hover" bind:tap="onLogoutTap">退出登录</view>
 
   <view class="footer-tip">车位租售平台 · v1.0.0</view>
 </view>

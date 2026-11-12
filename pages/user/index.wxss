@@ -1,41 +1,55 @@
+/* 我的 —— 微信「我的」页面风格 */
 .user-page {
   min-height: 100vh;
-  background-color: #f6f6f6;
+  background-color: var(--weui-bg, #ededed);
   padding-bottom: 80rpx;
 }
-/* 顶部资料卡 */
+/* 顶部资料区：白底通栏 */
 .profile-card {
-  position: relative;
-  height: 280rpx;
-  margin: 24rpx 24rpx 0;
-  border-radius: 24rpx;
-  overflow: hidden;
-}
-.profile-bg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(135deg, #0052d9 0%, #1e8ae8 100%);
+  background: #fff;
 }
 .profile-content {
-  position: relative;
-  z-index: 1;
   display: flex;
   align-items: center;
   padding: 48rpx 32rpx;
-  height: 100%;
+}
+/* 头像按钮：重置原生 button 样式，仅承担 chooseAvatar 能力 */
+.avatar-btn {
+  flex-shrink: 0;
+  width: 112rpx;
+  height: 112rpx;
+  padding: 0;
+  margin: 0;
+  border-radius: 50%;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  line-height: 1;
   box-sizing: border-box;
+}
+.avatar-btn::after {
+  border: none;
+}
+.avatar-img {
+  display: block;
+  width: 112rpx;
+  height: 112rpx;
+  border-radius: 50%;
+}
+.avatar-hint {
+  margin-top: 8rpx;
+  font-size: 20rpx;
+  color: var(--weui-fg-3, rgba(0, 0, 0, 0.3));
 }
 .profile-info {
   flex: 1;
+  min-width: 0;
   margin-left: 24rpx;
-  color: #fff;
+  color: var(--weui-fg, rgba(0, 0, 0, 0.9));
   overflow: hidden;
 }
 .nickname {
-  font-size: 36rpx;
+  font-size: 40rpx;
   font-weight: 600;
   margin-bottom: 8rpx;
   white-space: nowrap;
@@ -43,26 +57,24 @@
   text-overflow: ellipsis;
 }
 .sub {
-  font-size: 24rpx;
-  opacity: 0.85;
+  font-size: 26rpx;
+  color: var(--weui-fg-2, rgba(0, 0, 0, 0.55));
 }
 .sub.placeholder {
-  opacity: 0.7;
+  color: var(--weui-fg-3, rgba(0, 0, 0, 0.3));
 }
 .mobile.placeholder {
-  opacity: 0.7;
+  color: var(--weui-fg-3, rgba(0, 0, 0, 0.3));
 }
+
 /* 统计卡 */
 .stats-card {
   display: flex;
   align-items: center;
   background-color: #fff;
-  margin: -48rpx 24rpx 24rpx;
-  border-radius: 24rpx;
+  margin: 24rpx 24rpx 0;
+  border-radius: 16rpx;
   padding: 32rpx 0;
-  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.04);
-  position: relative;
-  z-index: 2;
 }
 .stats-item {
   flex: 1;
@@ -71,32 +83,47 @@
 .stats-value {
   font-size: 40rpx;
   font-weight: 600;
-  color: #333;
+  color: var(--weui-fg, rgba(0, 0, 0, 0.9));
   line-height: 1.2;
 }
 .stats-label {
   font-size: 24rpx;
-  color: #888;
+  color: var(--weui-fg-2, rgba(0, 0, 0, 0.55));
   margin-top: 8rpx;
 }
 .stats-divider {
-  width: 1rpx;
+  width: 1px;
   height: 48rpx;
-  background-color: #eee;
+  background-color: var(--weui-separator, rgba(0, 0, 0, 0.1));
+  transform: scaleY(0.5);
 }
-/* 菜单组 */
+
+/* 菜单组：图标与箭头对齐微信绿/灰 */
 .menu-group {
   margin: 24rpx;
-  border-radius: 24rpx;
+  border-radius: 16rpx;
   overflow: hidden;
+  --td-cell-left-icon-color: var(--weui-primary, #07c160);
+  --td-cell-right-icon-color: var(--weui-fg-3, rgba(0, 0, 0, 0.3));
 }
+
 /* 退出登录 */
-.logout-wrap {
-  margin: 48rpx 24rpx 0;
+.logout-cell {
+  margin: 24rpx;
+  padding: 28rpx 32rpx;
+  background: #fff;
+  border-radius: 16rpx;
+  text-align: center;
+  font-size: 32rpx;
+  color: var(--weui-red, #fa5151);
 }
+.cell-hover {
+  background: #f7f7f7;
+}
+
 .footer-tip {
   text-align: center;
   font-size: 22rpx;
-  color: #bbb;
+  color: var(--weui-fg-3, rgba(0, 0, 0, 0.3));
   margin-top: 48rpx;
 }
