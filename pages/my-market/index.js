@@ -103,7 +103,7 @@ Page({
       title: '确认撤回？',
       content: `撤回后该车位将不再展示，确定继续吗？`,
       confirmText: '撤回',
-      confirmColor: '#fa4126',
+      confirmColor: '#fa5151',
       success: async (r) => {
         if (!r.confirm) return;
         try {

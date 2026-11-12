@@ -79,7 +79,7 @@
     "custom": true,
     "backgroundColor": "#fff",
     "color": "#999",
-    "selectedColor": "#1E8AE8",
+    "selectedColor": "#07C160",
     "borderStyle": "white",
     "list": [{
         "pagePath": "pages/home/index",

@@ -1,66 +1,154 @@
 <navigation-bar default-data="{{titleProps}}" back="{{true}}" is-cus-back="{{true}}" bind:customBack="onBack"></navigation-bar>
 
 <view class="form-page">
-  <view class="form-card">
-    <view class="card-title">基本信息</view>
-    <t-cell title="车位编号" required bordered="{{false}}" note-class="form-cell-note">
-      <t-input slot="note" borderless align="right" value="{{form.parkingNo}}" placeholder="如 B2-A088" data-field="parkingNo" bind:change="onInput" />
-    </t-cell>
-    <t-cell title="{{priceLabel}}" required bordered="{{false}}" note-class="form-cell-note">
-      <t-input slot="note" borderless align="right" value="{{form.price}}" placeholder="请输入价格" type="digit" suffix="{{priceUnit}}" data-field="price" bind:change="onInput" />
-    </t-cell>
-    <t-cell title="联系电话" required bordered="{{false}}" note-class="form-cell-note">
-      <t-input slot="note" borderless align="right" value="{{form.phone}}" placeholder="请输入联系电话" type="number" data-field="phone" bind:change="onInput" />
-    </t-cell>
+  <!-- 基本信息 -->
+  <view class="weui-cells__title">基本信息</view>
+  <view class="weui-cells">
+    <view class="weui-cell">
+      <view class="weui-label">车位编号<text class="req">*</text></view>
+      <view class="weui-cell__bd">
+        <input
+          class="weui-input"
+          value="{{form.parkingNo}}"
+          placeholder="如 B2-A088"
+          placeholder-class="weui-input__placeholder"
+          maxlength="50"
+          data-field="parkingNo"
+          bindinput="onInput"
+        />
+      </view>
+    </view>
+    <view class="weui-cell">
+      <view class="weui-label">{{priceLabel}}<text class="req">*</text></view>
+      <view class="weui-cell__bd">
+        <input
+          class="weui-input"
+          type="digit"
+          value="{{form.price}}"
+          placeholder="请输入价格"
+          placeholder-class="weui-input__placeholder"
+          data-field="price"
+          bindinput="onInput"
+        />
+        <text wx:if="{{priceUnit}}" class="weui-input__suffix">{{priceUnit}}</text>
+      </view>
+    </view>
+    <view class="weui-cell">
+      <view class="weui-label">联系电话<text class="req">*</text></view>
+      <view class="weui-cell__bd">
+        <input
+          class="weui-input"
+          type="number"
+          value="{{form.phone}}"
+          placeholder="请输入联系电话"
+          placeholder-class="weui-input__placeholder"
+          data-field="phone"
+          bindinput="onInput"
+        />
+      </view>
+    </view>
   </view>
 
-  <view class="form-card">
-    <view class="card-title">位置信息</view>
-    <t-cell title="小区" bordered="{{false}}" note-class="form-cell-note">
-      <t-input slot="note" borderless align="right" value="{{form.community}}" placeholder="请输入小区名称" data-field="community" bind:change="onInput" />
-    </t-cell>
-    <t-cell title="位置描述" bordered="{{false}}" note-class="form-cell-note">
-      <t-input slot="note" borderless align="right" value="{{form.positionDesc}}" placeholder="如 地下二层近电梯口" data-field="positionDesc" bind:change="onInput" />
-    </t-cell>
-    <t-cell title="车位规格" bordered="{{false}}" note-class="form-cell-note">
-      <t-input slot="note" borderless align="right" value="{{form.specs}}" placeholder="如 标准车位、靠墙、带地锁" data-field="specs" bind:change="onInput" />
-    </t-cell>
-
+  <!-- 位置信息 -->
+  <view class="weui-cells__title">位置信息</view>
+  <view class="weui-cells">
+    <view class="weui-cell">
+      <view class="weui-label">小区</view>
+      <view class="weui-cell__bd">
+        <input
+          class="weui-input"
+          value="{{form.community}}"
+          placeholder="请输入小区名称"
+          placeholder-class="weui-input__placeholder"
+          data-field="community"
+          bindinput="onInput"
+        />
+      </view>
+    </view>
+    <view class="weui-cell">
+      <view class="weui-label">位置描述</view>
+      <view class="weui-cell__bd">
+        <input
+          class="weui-input"
+          value="{{form.positionDesc}}"
+          placeholder="如 地下二层近电梯口"
+          placeholder-class="weui-input__placeholder"
+          data-field="positionDesc"
+          bindinput="onInput"
+        />
+      </view>
+    </view>
+    <view class="weui-cell">
+      <view class="weui-label">车位规格</view>
+      <view class="weui-cell__bd">
+        <input
+          class="weui-input"
+          value="{{form.specs}}"
+          placeholder="如 标准车位、靠墙、带地锁"
+          placeholder-class="weui-input__placeholder"
+          data-field="specs"
+          bindinput="onInput"
+        />
+      </view>
+    </view>
     <block wx:if="{{buildingOptions.length}}">
-      <view class="form-subtitle">靠近楼栋（可多选）</view>
-      <view class="tag-group">
-        <block wx:for="{{buildingOptions}}" wx:key="value">
-          <t-check-tag
-            content="{{item.label}}"
-            checked="{{form.buildings.indexOf(item.value) > -1}}"
-            data-value="{{item.value}}"
-            bind:change="onToggleBuilding" />
-        </block>
+      <view class="weui-cell weui-cell_block">
+        <view class="cell-block-title">靠近楼栋<text class="cell-block-tip">最多选3个</text></view>
+        <view class="tag-group">
+          <block wx:for="{{buildingOptions}}" wx:key="value">
+            <t-check-tag
+              t-class="building-tag"
+              content="{{item.label}}"
+              checked="{{item.selected}}"
+              data-value="{{item.value}}"
+              bind:change="onToggleBuilding"
+            />
+          </block>
+        </view>
       </view>
     </block>
   </view>
 
-  <view class="form-card">
-    <view class="card-title">图片与说明</view>
-    <view class="upload-title">车位图片</view>
-    <view class="image-grid">
-      <block wx:for="{{images}}" wx:key="id">
-        <view class="image-item">
-          <image src="{{item.url}}" mode="aspectFill" bind:tap="previewImage" data-index="{{index}}" />
-          <view class="image-remove" bind:tap="removeImage" data-index="{{index}}">×</view>
+  <!-- 图片与说明 -->
+  <view class="weui-cells__title">图片与说明</view>
+  <view class="weui-cells">
+    <view class="weui-cell weui-cell_block">
+      <view class="image-grid">
+        <block wx:for="{{images}}" wx:key="id">
+          <view class="image-item">
+            <image src="{{item.url}}" mode="aspectFill" bind:tap="previewImage" data-index="{{index}}" />
+            <view class="image-remove" bind:tap="removeImage" data-index="{{index}}">×</view>
+          </view>
+        </block>
+        <view wx:if="{{images.length < 6}}" class="image-add" bind:tap="chooseImages">
+          <view class="plus">+</view>
+          <view class="add-text">{{uploading ? '上传中' : '上传图片'}}</view>
         </view>
-      </block>
-      <view wx:if="{{images.length < 6}}" class="image-add" bind:tap="chooseImages">
-        <view class="plus">+</view>
-        <view class="add-text">{{uploading ? '上传中' : '上传图片'}}</view>
       </view>
+      <view class="upload-tip">最多上传6张，建议包含车位全景、编号、出入口</view>
     </view>
-    <view class="upload-tip">最多上传6张，建议包含车位全景、编号、出入口</view>
-    <t-textarea value="{{form.description}}" placeholder="补充说明车位亮点、交易方式、可租/售时间等" maxlength="500" autosize data-field="description" bind:change="onInput" />
+    <view class="weui-cell weui-cell_block">
+      <textarea
+        class="weui-textarea"
+        value="{{form.description}}"
+        placeholder="补充说明车位亮点、交易方式、可租/售时间等"
+        placeholder-class="weui-input__placeholder"
+        maxlength="500"
+        auto-height
+        data-field="description"
+        bindinput="onInput"
+      />
+    </view>
   </view>
 
   <view class="submit-spacer"></view>
-  <view class="submit-bar">
-    <t-button theme="primary" size="large" block loading="{{submitting}}" disabled="{{submitting || uploading}}" bind:tap="submitForm">发布{{typeText}}</t-button>
-  </view>
+</view>
+
+<view class="submit-bar">
+  <button
+    class="weui-btn weui-btn_primary {{submitting || uploading ? 'weui-btn_disabled' : ''}}"
+    hover-class="{{submitting || uploading ? 'none' : 'weui-btn_active'}}"
+    loading="{{submitting}}"
+    bind:tap="submitForm"
+  >{{isEdit ? '保存修改' : '发布' + typeText}}</button>
 </view>

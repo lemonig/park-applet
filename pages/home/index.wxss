@@ -1,7 +1,6 @@
-/* 页面背景 */
+/* 首页 —— 微信原生（WeUI）风格 */
 .page-container {
-  background-color: #f6f6f6;
-  /* TDesign 常用浅灰背景 */
+  background-color: var(--weui-bg, #ededed);
   min-height: 100vh;
   padding-bottom: 40rpx;
 }
@@ -24,71 +23,62 @@
   transform: translateY(0);
   pointer-events: auto;
 }
-/* 列表容器 */
+
+/* 发布入口：白卡 + 彩色圆角图标 */
 .action-section {
   display: flex;
   gap: 24rpx;
-  padding: 24rpx 24rpx 0;
+  padding: 24rpx;
 }
 .action-card {
-  position: relative;
   flex: 1;
-  height: 168rpx;
+  display: flex;
+  align-items: center;
   padding: 28rpx;
-  border-radius: 28rpx;
-  overflow: hidden;
+  background: #fff;
+  border-radius: 16rpx;
   box-sizing: border-box;
-  color: #fff;
-  box-shadow: 0 14rpx 28rpx rgba(0, 82, 217, 0.16);
-}
-.action-card::after {
-  content: '';
-  position: absolute;
-  right: -34rpx;
-  bottom: -48rpx;
-  width: 150rpx;
-  height: 150rpx;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.18);
-}
-.action-sale {
-  background: linear-gradient(135deg, #ff8f1f 0%, #fa4126 100%);
-}
-.action-rent {
-  background: linear-gradient(135deg, #2ba471 0%, #0052d9 100%);
-}
-.action-content {
-  position: relative;
-  z-index: 1;
-}
-.action-title {
-  font-size: 36rpx;
-  font-weight: 700;
-  line-height: 1;
-}
-.action-desc {
-  margin-top: 18rpx;
-  font-size: 24rpx;
-  color: rgba(255, 255, 255, 0.86);
 }
 .action-icon {
-  position: absolute;
-  right: 24rpx;
-  bottom: 22rpx;
-  z-index: 1;
-  width: 56rpx;
-  height: 56rpx;
-  line-height: 56rpx;
+  flex-shrink: 0;
+  width: 84rpx;
+  height: 84rpx;
+  line-height: 84rpx;
   text-align: center;
-  border-radius: 50%;
-  font-size: 26rpx;
-  font-weight: 700;
-  background: rgba(255, 255, 255, 0.24);
+  border-radius: 20rpx;
+  font-size: 34rpx;
+  font-weight: 600;
+  margin-right: 24rpx;
+}
+.action-icon-sale {
+  background: var(--td-brand-color-1, #f0faf3);
+  color: var(--weui-primary, #07c160);
+}
+.action-icon-rent {
+  background: #eef3fb;
+  color: var(--weui-link, #576b95);
+}
+.action-content {
+  min-width: 0;
+}
+.action-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: var(--weui-fg, rgba(0, 0, 0, 0.9));
+  line-height: 1.2;
+}
+.action-desc {
+  margin-top: 8rpx;
+  font-size: 24rpx;
+  color: var(--weui-fg-2, rgba(0, 0, 0, 0.55));
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* 列表容器 */
 .list-section {
-  padding: 24rpx;
+  padding: 0 24rpx 24rpx;
 }
 /* 卡片主体 */
 .parking-card {
@@ -98,15 +88,12 @@
   margin-bottom: 24rpx;
   display: flex;
   flex-direction: row;
-  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
-  /* 轻微阴影 */
 }
 /* 左侧布局 */
 .card-left {
   position: relative;
   margin-right: 24rpx;
   flex-shrink: 0;
-  /* 防止图片被压缩 */
 }
 /* 自定义状态角标 */
 .status-badge {
@@ -120,11 +107,10 @@
   font-weight: 500;
 }
 .status-active {
-  background-color: #0052d9;
+  background-color: var(--weui-primary, #07c160);
 }
-/* TDesign 品牌蓝 */
 .status-sold {
-  background-color: #999;
+  background-color: #b2b2b2;
 }
 /* 右侧布局 */
 .card-right {
@@ -143,12 +129,12 @@
 .parking-number {
   font-size: 34rpx;
   font-weight: 600;
-  color: #333;
+  color: var(--weui-fg, rgba(0, 0, 0, 0.9));
 }
 /* 列表底部提示 */
 .list-tip {
   text-align: center;
-  color: #999;
+  color: var(--weui-fg-3, rgba(0, 0, 0, 0.3));
   font-size: 24rpx;
   padding: 24rpx 0;
 }
@@ -167,13 +153,11 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  /* 底部对齐 */
   margin-top: 16rpx;
 }
-/* 价格样式 */
+/* 价格样式：微信红 */
 .price-box {
-  color: #fa4126;
-  /* TDesign 警告/价格红 */
+  color: var(--weui-red, #fa5151);
   line-height: 1;
 }
 .currency {
@@ -187,6 +171,6 @@
 }
 .unit {
   font-size: 24rpx;
-  color: #999;
+  color: var(--weui-fg-3, rgba(0, 0, 0, 0.3));
   font-weight: normal;
 }

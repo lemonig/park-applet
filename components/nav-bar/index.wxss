@@ -1,8 +1,7 @@
-/* components/nav-bar/index.wxss */
+/* components/nav-bar/index.wxss —— 微信原生风：白底黑字 */
 .custom-navbar {
   padding: 0 15px;
-  background-color: #0252cc;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
   box-sizing: border-box;
   display: flex;
   width: 100%;
@@ -18,18 +17,16 @@
 
 .custom-navbar-title {
   font-size: 18px;
-  font-weight: bold;
+  font-weight: 500;
   text-align: center;
 }
-
-/*  */
 
 .nav-bar {
   position: fixed;
   width: 100%;
   top: 0;
-  color: #fff;
-  background: #0252cc;
+  color: var(--weui-fg, rgba(0, 0, 0, 0.9));
+  background: #fff;
 }
 .nav-amin {
   position: relative;
@@ -49,7 +46,7 @@
   z-index: 1;
 }
 .nav-bar .search {
-  font-size: 16px;
-  font-weight: bold;
-  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--weui-fg, rgba(0, 0, 0, 0.9));
 }

@@ -1,124 +1,43 @@
+/* 发布/编辑车位表单 —— 微信原生（WeUI）风格，表单基础样式见 app.wxss */
 .form-page {
   min-height: 100vh;
-  background-color: #f6f6f6;
-  padding: 24rpx 24rpx 160rpx;
+  padding: 8rpx 0 40rpx;
   box-sizing: border-box;
 }
 
-.form-card {
-  margin-bottom: 24rpx;
-  padding: 8rpx 0 16rpx;
-  background: #fff;
-  border-radius: 24rpx;
-  overflow: hidden;
+.submit-spacer {
+  height: 160rpx;
 }
 
-.card-title {
-  padding: 28rpx 32rpx 12rpx;
-  font-size: 30rpx;
-  font-weight: 600;
-  color: #222;
-}
-
-.upload-title {
-  padding: 16rpx 32rpx 20rpx;
-  font-size: 28rpx;
-  color: #333;
-}
-
-.form-cell-note {
-  flex: 1;
-  display: flex;
-  justify-content: flex-end;
-}
-
-.form-subtitle {
-  padding: 20rpx 32rpx 8rpx;
-  font-size: 28rpx;
-  color: #333;
-}
-
+/* 靠近楼栋标签组 */
 .tag-group {
   display: flex;
   flex-wrap: wrap;
   gap: 16rpx;
-  padding: 8rpx 32rpx 24rpx;
 }
 
-.image-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 18rpx;
-  padding: 0 32rpx;
-}
-
-.image-item,
-.image-add {
-  position: relative;
-  width: 196rpx;
-  height: 196rpx;
-  border-radius: 16rpx;
-  overflow: hidden;
-  background: #f3f3f3;
-}
-
-.image-item image {
-  width: 100%;
-  height: 100%;
-}
-
-.image-remove {
-  position: absolute;
-  top: 8rpx;
-  right: 8rpx;
-  width: 40rpx;
-  height: 40rpx;
-  line-height: 36rpx;
-  text-align: center;
-  border-radius: 50%;
-  color: #fff;
-  font-size: 34rpx;
-  background: rgba(0, 0, 0, 0.55);
-}
-
-.image-add {
-  display: flex;
-  flex-direction: column;
+/* 楼栋 tag：微信风方角，选中态微信绿 */
+.building-tag {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: 2rpx dashed #c9cdd4;
+  border-radius: 10rpx !important;
+  padding: 0 28rpx !important;
+  height: 64rpx !important;
+  line-height: 64rpx !important;
+  font-size: 28rpx;
   box-sizing: border-box;
-  color: #888;
+  transition: all 0.2s ease;
 }
 
-.plus {
-  font-size: 56rpx;
-  line-height: 1;
+.building-tag.t-tag--default {
+  color: var(--weui-fg-2, rgba(0, 0, 0, 0.55)) !important;
+  background-color: #f7f7f7 !important;
+  border-color: #f7f7f7 !important;
 }
 
-.add-text {
-  margin-top: 12rpx;
-  font-size: 24rpx;
-}
-
-.upload-tip {
-  padding: 16rpx 32rpx 24rpx;
-  font-size: 24rpx;
-  color: #999;
-}
-
-.submit-spacer {
-  height: 1rpx;
-}
-
-.submit-bar {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 20;
-  padding: 20rpx 24rpx calc(20rpx + env(safe-area-inset-bottom));
-  background: #fff;
-  box-shadow: 0 -6rpx 18rpx rgba(0, 0, 0, 0.06);
-  box-sizing: border-box;
+.building-tag.t-tag--checked {
+  color: #ffffff !important;
+  background: var(--weui-primary, #07c160) !important;
+  border-color: var(--weui-primary, #07c160) !important;
 }

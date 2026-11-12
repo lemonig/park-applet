@@ -1,6 +1,7 @@
+/* 我的发布 —— 微信原生（WeUI）风格 */
 .my-market-page {
   min-height: 100vh;
-  background-color: #f6f6f6;
+  background-color: var(--weui-bg, #ededed);
   padding-bottom: 40rpx;
 }
 
@@ -13,15 +14,15 @@
 }
 
 .list-section {
-  padding: 0 24rpx;
+  padding: 24rpx;
 }
 
 .market-card {
   display: flex;
   background: #fff;
-  border-radius: 24rpx;
+  border-radius: 16rpx;
   padding: 24rpx;
-  margin-bottom: 20rpx;
+  margin-bottom: 24rpx;
 }
 
 .card-left {
@@ -45,7 +46,7 @@
 .parking-number {
   font-size: 32rpx;
   font-weight: 600;
-  color: #222;
+  color: var(--weui-fg, rgba(0, 0, 0, 0.9));
 }
 
 .card-tags {
@@ -62,7 +63,7 @@
 }
 
 .price-box {
-  color: #fa4126;
+  color: var(--weui-red, #fa5151);
   display: flex;
   align-items: baseline;
 }
@@ -80,7 +81,7 @@
 
 .unit {
   font-size: 22rpx;
-  color: #999;
+  color: var(--weui-fg-3, rgba(0, 0, 0, 0.3));
 }
 
 .card-actions {
@@ -91,15 +92,15 @@
 .reject-remark {
   margin-top: 16rpx;
   padding: 12rpx 16rpx;
-  background: #fff1f0;
+  background: #fceded;
   border-radius: 8rpx;
   font-size: 24rpx;
-  color: #fa4126;
+  color: var(--weui-red, #fa5151);
 }
 
 .list-tip {
   text-align: center;
-  color: #999;
+  color: var(--weui-fg-3, rgba(0, 0, 0, 0.3));
   font-size: 24rpx;
   padding: 24rpx 0;
 }

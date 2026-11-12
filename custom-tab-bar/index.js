@@ -18,7 +18,7 @@ Component({
     // 自定义 TDesign 主题色：选中态颜色（与 app.json selectedColor 保持一致）
     theme: {
       custom: {
-        colorPrimary: '#1E8AE8',
+        colorPrimary: '#07C160',
       },
     },
   },

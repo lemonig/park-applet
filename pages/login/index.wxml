@@ -1,8 +1,6 @@
 <navigation-bar default-data="{{titleProps}}" back="{{false}}"></navigation-bar>
 
 <view class="login-page" style="min-height: calc(100vh - {{navBarHeight}}px)">
-  <view class="login-bg"></view>
-
   <view class="brand">
     <t-image class="logo" mode="aspectFill" src="/assets/imgs/bg_welcome.png" aria-label="欢迎" />
     <view class="title">车位</view>

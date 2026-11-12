@@ -1,23 +1,12 @@
+/* 登录 —— 微信原生（WeUI）风格：浅灰底、微信绿按钮、蓝色链接 */
 .login-page {
   position: relative;
   display: flex;
   flex-direction: column;
   padding: 0 48rpx 64rpx;
   box-sizing: border-box;
-  background: #f6f8fb;
+  background: var(--weui-bg, #ededed);
   overflow: hidden;
-}
-
-.login-bg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 520rpx;
-  background: linear-gradient(160deg, #1e8ae8 0%, #4aa6f0 60%, #f6f8fb 100%);
-  border-bottom-left-radius: 64rpx;
-  border-bottom-right-radius: 64rpx;
-  z-index: 0;
 }
 
 .brand {
@@ -26,29 +15,29 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 120rpx;
+  padding-top: 140rpx;
 }
 
 .logo {
   width: 180rpx;
   height: 180rpx;
-  border-radius: 40rpx;
+  border-radius: 32rpx;
   overflow: hidden;
-  box-shadow: 0 16rpx 40rpx rgba(15, 23, 42, 0.18);
+  box-shadow: 0 12rpx 32rpx rgba(0, 0, 0, 0.08);
 }
 
 .title {
-  margin-top: 32rpx;
+  margin-top: 40rpx;
   font-size: 44rpx;
   font-weight: 600;
-  color: #ffffff;
+  color: var(--weui-fg, rgba(0, 0, 0, 0.9));
   letter-spacing: 4rpx;
 }
 
 .subtitle {
-  margin-top: 12rpx;
+  margin-top: 16rpx;
   font-size: 26rpx;
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--weui-fg-2, rgba(0, 0, 0, 0.55));
 }
 
 .login-body {
@@ -57,46 +46,31 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  margin-top: 64rpx;
+  margin-top: 96rpx;
 }
 
 .login-panel {
   width: 100%;
-  padding: 56rpx 40rpx 48rpx;
-  background: #ffffff;
-  border-radius: 32rpx;
   box-sizing: border-box;
-  box-shadow: 0 20rpx 48rpx rgba(15, 23, 42, 0.08);
 }
 
 .welcome {
   font-size: 40rpx;
   font-weight: 600;
-  color: #1f2937;
+  color: var(--weui-fg, rgba(0, 0, 0, 0.9));
 }
 
 .welcome-tip {
-  margin-top: 12rpx;
+  margin-top: 16rpx;
   font-size: 26rpx;
-  color: #9ca3af;
-}
-
-.field {
-  margin-top: 32rpx;
-  background: #f6f8fb;
-  border-radius: 16rpx;
-  overflow: hidden;
-}
-
-.input {
-  font-size: 30rpx;
+  color: var(--weui-fg-2, rgba(0, 0, 0, 0.55));
 }
 
 .primary-btn {
-  margin-top: 56rpx;
+  margin-top: 64rpx;
   --td-button-large-height: 96rpx;
-  --td-button-border-radius: 48rpx;
-  --td-brand-color: #1e8ae8;
+  --td-button-border-radius: 16rpx;
+  font-weight: 500;
 }
 
 .wechat-btn-inner {
@@ -106,18 +80,11 @@
   gap: 12rpx;
 }
 
-.ghost-btn {
-  margin-top: 36rpx;
-  text-align: center;
-  font-size: 28rpx;
-  color: #1e8ae8;
-}
-
 .error-message {
   margin-top: 28rpx;
   text-align: center;
   font-size: 26rpx;
-  color: #e34d59;
+  color: var(--weui-red, #fa5151);
 }
 
 .agreement {
@@ -130,9 +97,9 @@
 
 .agreement-text {
   font-size: 24rpx;
-  color: #9ca3af;
+  color: var(--weui-fg-2, rgba(0, 0, 0, 0.55));
 }
 
 .agreement-text .link {
-  color: #1e8ae8;
+  color: var(--weui-link, #576b95);
 }

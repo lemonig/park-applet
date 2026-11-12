@@ -6,7 +6,7 @@
   bordered
   fixed="{{false}}"
   safe-area-inset-bottom
-  style="--td-tab-bar-active-color: #1E8AE8; --td-tab-bar-active-bg: rgba(30,138,232,0.08); --td-tab-bar-color: #999;"
+  style="--td-tab-bar-active-color: #07C160; --td-tab-bar-active-bg: transparent; --td-tab-bar-color: rgba(0,0,0,0.55);"
 >
   <t-tab-bar-item
     wx:for="{{list}}"

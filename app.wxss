@@ -1,132 +1,255 @@
-/**app.wxss**/
-/* 加号按钮 */
-.fix-add-btn {
-  position: fixed;
-  bottom: calc(env(safe-area-inset-bottom) + 100rpx + 30rpx);
-  right: 30rpx;
-}
-.form-btn-area {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  margin: 50rpx 0 0rpx ;
-  padding-bottom: 40rpx;
-}
-.cell-group-class {
-  margin-bottom: 25rpx;
-}
-.font-color-gray {
-  color: #6b778c;
-}
-.font-money {
-  font-weight: bold;
-}
-@font-face {
-  font-family: "iconfont";
-  /* Project id 4053041 */
-  src: url('//at.alicdn.com/t/c/font_4053041_033ptxilms3h.woff2?t=1683530516159') format('woff2'), url('//at.alicdn.com/t/c/font_4053041_033ptxilms3h.woff?t=1683530516159') format('woff'), url('//at.alicdn.com/t/c/font_4053041_033ptxilms3h.ttf?t=1683530516159') format('truetype');
-}
-.iconfont {
-  font-family: "iconfont" !important;
-  font-size: 16px;
-  font-style: normal;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-.icon-gongsi:before {
-  content: "\e62e";
-}
-.icon-rmb:before {
-  content: "\e621";
-}
-.icon-hetong:before {
-  content: "\e70e";
-}
-.icon-meiyuan:before {
-  content: "\e90d";
-}
-.icon-a-SalesOrderManagement:before {
-  content: "\e635";
-}
-.icon-zhengfu:before {
-  content: "\e90f";
-}
-.icon-meiyuan8:before {
-  content: "\e73a";
-}
-.icon-baoxianxiaoshou:before {
-  content: "\e63f";
-}
-.icon-xiaoshoubaobiao:before {
-  content: "\e60d";
-}
-.icon-fl-renminbi:before {
-  content: "\e634";
-}
-.icon-call-phone:before {
-  content: "\e725";
-}
-.icon-call-tel:before {
-  content: "\e66e";
-}
-.icon-callme:before {
-  content: "\e6c2";
-}
-.icon-lxr-book:before {
-  content: "\e612";
-}
-.icon-qiandai:before {
-  content: "\e62f";
-}
-.icon-search:before {
-  content: "\e625";
-}
-.icon-gszc-a:before {
-  content: "\e749";
-}
+/**
+ * 全局样式 —— 微信原生（WeUI）风格
+ *
+ * 设计令牌：
+ *  - 页面背景   #EDEDED
+ *  - 主色       #07C160（微信绿），按压 #06AE56，禁用 #9ED99D
+ *  - 文字       主 rgba(0,0,0,0.9) / 次 rgba(0,0,0,0.55) / 提示 rgba(0,0,0,0.3)
+ *  - 链接       #576B95（微信链接蓝）
+ *  - 价格/警示  #FA5151（微信红）
+ *  - 分隔线     rgba(0,0,0,0.1) 半像素
+ */
 page {
-  --color-blue: #1989fa;
-  --primary: #0252cc;
-  --button-primary-background-color: #0252cc;
-  --button-info-background-color: #0252cc;
-  --button-border-radius: 6px;
-  --dropdown-menu-option-active-color: #0252cc;
-  --dropdown-menu-title-active-text-color: #0252cc;
-  --tabs-default-color: #0252cc;
-  --tabs-bottom-bar-color: #0252cc;
-  --dropdown-margin: 25rpx;
-  background-color: #f1f4f9;
-  color: #323233;
+  /* WeUI 基础令牌 */
+  --weui-primary: #07c160;
+  --weui-primary-active: #06ae56;
+  --weui-primary-disabled: #9ed99d;
+  --weui-link: #576b95;
+  --weui-red: #fa5151;
+  --weui-orange: #fa9d3b;
+  --weui-fg: rgba(0, 0, 0, 0.9);
+  --weui-fg-2: rgba(0, 0, 0, 0.55);
+  --weui-fg-3: rgba(0, 0, 0, 0.3);
+  --weui-bg: #ededed;
+  --weui-separator: rgba(0, 0, 0, 0.1);
+
+  /* TDesign 品牌色系整体对齐微信绿（button/tab/radio/checkbox/tag/search 等跟随） */
+  --td-brand-color: #07c160;
+  --td-brand-color-1: #f0faf3;
+  --td-brand-color-2: #ddf3e6;
+  --td-brand-color-3: #b8e8cc;
+  --td-brand-color-4: #8fdcb0;
+  --td-brand-color-5: #5fcf94;
+  --td-brand-color-6: #2fc477;
+  --td-brand-color-7: #07c160;
+  --td-brand-color-8: #06ae56;
+  --td-brand-color-9: #058c46;
+  --td-brand-color-10: #036b37;
+  --td-brand-color-active: #06ae56;
+  --td-brand-color-focus: #ddf3e6;
+  --td-brand-color-disabled: #8fdcb0;
+  --td-brand-color-light: #f0faf3;
+  --td-brand-color-light-active: #ddf3e6;
+
+  background-color: var(--weui-bg);
+  color: var(--weui-fg);
+  font-size: 32rpx;
 }
+
 .container {
   width: 100vw;
   box-sizing: border-box;
 }
-.page-padding {
-  padding: 0rpx 26rpx;
-}
-.list-padding {
-  padding: 24rpx;
-}
-.list-margin-btm {
-  margin-bottom: 8rpx;
-}
-.bg-color {
-  background-color: #f1f4f9;
+
+/* ==================== WeUI 表单通用（carport-form / feedback 共用） ==================== */
+
+/* 分组小标题：灰底上的灰色小字，与单元格文字左对齐 */
+.weui-cells__title {
+  margin: 32rpx 56rpx 16rpx;
+  font-size: 28rpx;
+  color: var(--weui-fg-2);
+  line-height: 1.4;
 }
 
-.gs-btn{
-    width: 50rpx !important;
-    border: none !important;
-  }
+/* 白色分组容器 */
+.weui-cells {
+  margin: 0 24rpx 8rpx;
+  background: #fff;
+  border-radius: 16rpx;
+  overflow: hidden;
+}
 
-  /* .form-container .van-cell__title,.van-field__label {
-    color: var(--cell-value-color,#969799) !important;
-    
-  } */
- .form-container .van-cell__value{
-    color: #000 !important;
-  }
-  .form-container .sd-list .title{
-    color: var(--cell-value-color,#969799) !important;
-  }
+/* 单行单元格：label 左、内容右占满 */
+.weui-cell {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 26rpx 32rpx;
+}
+.weui-cell::after {
+  content: '';
+  position: absolute;
+  left: 32rpx;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--weui-separator);
+  transform: scaleY(0.5);
+  transform-origin: 0 0;
+}
+.weui-cell:last-child::after {
+  display: none;
+}
+
+/* 纵向块（标签组/上传/多行文本），无底部分隔线需求时用 */
+.weui-cell_block {
+  display: block;
+}
+
+.weui-label {
+  flex-shrink: 0;
+  width: 200rpx;
+  font-size: 32rpx;
+  color: var(--weui-fg);
+}
+.weui-label .req {
+  margin-left: 4rpx;
+  color: var(--weui-red);
+  font-size: 28rpx;
+}
+
+.weui-cell__bd {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+}
+
+.weui-input {
+  flex: 1;
+  height: 48rpx;
+  min-height: 48rpx;
+  font-size: 32rpx;
+  color: var(--weui-fg);
+}
+.weui-input__suffix {
+  margin-left: 12rpx;
+  font-size: 32rpx;
+  color: var(--weui-fg-2);
+}
+/* input 的 placeholder-class */
+.weui-input__placeholder {
+  color: var(--weui-fg-3);
+}
+
+.weui-textarea {
+  width: 100%;
+  font-size: 32rpx;
+  line-height: 1.5;
+  color: var(--weui-fg);
+}
+.weui-textarea-counter {
+  margin-top: 12rpx;
+  text-align: right;
+  font-size: 24rpx;
+  color: var(--weui-fg-3);
+}
+
+/* 纵向块内的小标题 */
+.cell-block-title {
+  font-size: 32rpx;
+  color: var(--weui-fg);
+  margin-bottom: 20rpx;
+}
+.cell-block-tip {
+  margin-left: 12rpx;
+  font-size: 24rpx;
+  color: var(--weui-fg-3);
+}
+
+/* ==================== 微信绿主按钮 ==================== */
+.weui-btn {
+  width: 100%;
+  height: 92rpx;
+  line-height: 92rpx;
+  border-radius: 16rpx;
+  font-size: 34rpx;
+  font-weight: 500;
+  text-align: center;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+.weui-btn::after {
+  border: none;
+}
+.weui-btn_primary {
+  background: var(--weui-primary);
+  color: #fff;
+}
+.weui-btn_active {
+  background: var(--weui-primary-active);
+}
+.weui-btn_disabled {
+  background: var(--weui-primary-disabled);
+  color: #fff;
+}
+
+/* 底部固定操作栏 */
+.submit-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 20;
+  padding: 16rpx 24rpx calc(16rpx + env(safe-area-inset-bottom));
+  background: #fff;
+  border-top: 1px solid var(--weui-separator);
+  box-sizing: border-box;
+}
+
+/* ==================== 上传九宫格（发布/反馈共用） ==================== */
+.image-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+}
+.image-item,
+.image-add {
+  position: relative;
+  width: 200rpx;
+  height: 200rpx;
+  border-radius: 8rpx;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+.image-item image {
+  width: 100%;
+  height: 100%;
+}
+.image-remove {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 40rpx;
+  height: 40rpx;
+  line-height: 36rpx;
+  text-align: center;
+  border-radius: 0 8rpx 0 8rpx;
+  color: #fff;
+  font-size: 30rpx;
+  background: rgba(0, 0, 0, 0.55);
+}
+.image-add {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #fafafa;
+  border: 2rpx dashed #d9d9d9;
+  color: var(--weui-fg-3);
+}
+.plus {
+  font-size: 52rpx;
+  line-height: 1;
+  font-weight: 300;
+}
+.add-text {
+  margin-top: 8rpx;
+  font-size: 24rpx;
+}
+.upload-tip {
+  margin-top: 16rpx;
+  font-size: 24rpx;
+  color: var(--weui-fg-3);
+}
