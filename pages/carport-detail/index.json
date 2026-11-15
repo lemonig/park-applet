@@ -1,3 +1,11 @@
 {
-  "usingComponents": {}
+  "usingComponents": {
+    "t-button": "tdesign-miniprogram/button/button",
+    "t-cell": "tdesign-miniprogram/cell/cell",
+    "t-cell-group": "tdesign-miniprogram/cell-group/cell-group",
+    "t-empty": "tdesign-miniprogram/empty/empty",
+    "t-skeleton": "tdesign-miniprogram/skeleton/skeleton",
+    "t-swiper": "tdesign-miniprogram/swiper/swiper",
+    "t-tag": "tdesign-miniprogram/tag/tag"
+  }
 }

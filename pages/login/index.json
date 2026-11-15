@@ -1,6 +1,9 @@
 {
   "usingComponents": {
     "t-icon": "tdesign-miniprogram/icon/icon",
-    "t-checkbox": "tdesign-miniprogram/checkbox/checkbox"
+    "t-checkbox": "tdesign-miniprogram/checkbox/checkbox",
+    "t-button": "tdesign-miniprogram/button/button",
+    "t-image": "tdesign-miniprogram/image/image",
+    "t-toast": "tdesign-miniprogram/toast/toast"
   }
 }
