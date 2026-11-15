@@ -7,6 +7,7 @@
     "pages/carport-form/index",
     "pages/community-picker/index",
     "pages/my-market/index",
+    "pages/my-favorite/index",
     "pages/feedback/index"
   ],
   "window": {

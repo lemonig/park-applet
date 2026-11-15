@@ -1,0 +1,56 @@
+<navigation-bar default-data="{{titleProps}}" back="{{true}}"></navigation-bar>
+
+<view class="page-container">
+  <view class="list-section">
+    <block wx:for="{{pageData}}" wx:key="id">
+      <view class="parking-card" bind:tap="onTap" data-id="{{item.id}}">
+        <view class="fav-btn" catch:tap="onRemove" data-index="{{index}}">
+          <t-icon name="star-filled" size="44rpx" color="#fa5151" />
+        </view>
+
+        <view class="card-left">
+          <t-image src="{{item.imageUrl}}" width="200rpx" height="200rpx" shape="round" mode="aspectFill" aria-label="车位图片" />
+          <view class="status-badge {{item.available ? 'status-active' : 'status-sold'}}">
+            {{item.statusText}}
+          </view>
+        </view>
+
+        <view class="card-right">
+          <view class="card-header">
+            <text class="parking-number">{{item.parkingNo}}</text>
+            <t-tag variant="light" theme="{{item.type === 1 ? 'warning' : 'primary'}}" size="small">{{item.typeText}}</t-tag>
+          </view>
+
+          <view class="card-tags">
+            <t-tag wx:if="{{item.positionDesc}}" class="margin-tag" variant="light" theme="primary" size="small">{{item.positionDesc}}</t-tag>
+            <t-tag wx:if="{{item.specs}}" class="margin-tag" variant="light" theme="primary" size="small">{{item.specs}}</t-tag>
+          </view>
+
+          <view class="card-footer">
+            <view class="price-box">
+              <text class="currency">¥</text>
+              <text class="amount">{{item.price}}</text>
+              <text class="unit">{{item.unit}}</text>
+            </view>
+
+            <t-button
+              theme="primary"
+              size="small"
+              shape="round"
+              bind:tap="onTap"
+              data-id="{{item.id}}">
+              查看
+            </t-button>
+          </view>
+        </view>
+      </view>
+    </block>
+
+    <t-empty wx:if="{{!loading && pageData.length === 0}}" description="暂无收藏，去首页看看" />
+
+    <view wx:if="{{loading}}" class="list-tip">
+      <t-loading theme="circular" size="40rpx" text="加载中..." inherit-color />
+    </view>
+    <view wx:elif="{{isAllData && pageData.length > 0}}" class="list-tip">没有更多了</view>
+  </view>
+</view>

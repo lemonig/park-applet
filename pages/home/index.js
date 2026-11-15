@@ -1,4 +1,5 @@
 import { listMarket } from '../../api/market';
+import { listFavoriteIds, addFavorite, removeFavorite } from '../../api/favorite';
 
 const app = getApp();
 const PAGE_SIZE = 10;
@@ -29,6 +30,7 @@ Page({
       unit: item.type === 1 ? '元' : '元/月',
       available: item.status === 1,
       statusText: item.status === 1 ? '在售' : item.status === 0 ? '待审核' : '已下架',
+      favorited: this.favoriteIds ? this.favoriteIds.has(item.id) : false,
     };
   },
 
@@ -38,6 +40,11 @@ Page({
 
     const pageNum = reset ? 1 : this.data.pageNum;
     this.setData({ loading: true });
+
+    // 星标状态与列表解耦：登录态下拉一次 ids，返回后统一回填
+    if (reset) {
+      this.fetchFavoriteIds();
+    }
 
     const params = {
       pageNum,
@@ -64,6 +71,71 @@ Page({
       this.setData({ loading: false });
     } finally {
       wx.stopPullDownRefresh();
+    }
+  },
+
+  // 拉取收藏 id 集合（未登录直接置空，接口 401 由请求层静默重登兜底）
+  fetchFavoriteIds: async function () {
+    if (!wx.getStorageSync('token')) {
+      this.favoriteIds = new Set();
+      return;
+    }
+    try {
+      const res = await listFavoriteIds();
+      if (res && res.success !== false && Array.isArray(res.data)) {
+        this.favoriteIds = new Set(res.data);
+        this.applyFavoriteState();
+      }
+    } catch (err) {
+      // 星标回显失败不影响列表
+    }
+  },
+
+  // 用最新收藏集合回填已渲染列表的星标状态
+  applyFavoriteState() {
+    const pageData = this.data.pageData.map((item) => ({
+      ...item,
+      favorited: this.favoriteIds.has(item.id),
+    }));
+    this.setData({ pageData });
+  },
+
+  // 收藏/取消收藏：乐观更新，失败回滚
+  onToggleFavorite: async function (e) {
+    const index = e.currentTarget.dataset.index;
+    const item = this.data.pageData[index];
+    if (!item) return;
+
+    if (!wx.getStorageSync('token')) {
+      wx.showToast({ title: '登录后即可收藏', icon: 'none' });
+      setTimeout(() => wx.navigateTo({ url: '/pages/login/index' }), 600);
+      return;
+    }
+
+    const next = !item.favorited;
+    this.setData({ [`pageData[${index}].favorited`]: next });
+    if (next) {
+      this.favoriteIds.add(item.id);
+    } else {
+      this.favoriteIds.delete(item.id);
+    }
+
+    try {
+      if (next) {
+        await addFavorite(item.id);
+        wx.showToast({ title: '已收藏', icon: 'none' });
+      } else {
+        await removeFavorite(item.id);
+        wx.showToast({ title: '已取消收藏', icon: 'none' });
+      }
+    } catch (err) {
+      // 接口失败：回滚 UI 与本地集合
+      this.setData({ [`pageData[${index}].favorited`]: !next });
+      if (next) {
+        this.favoriteIds.delete(item.id);
+      } else {
+        this.favoriteIds.add(item.id);
+      }
     }
   },
 
@@ -99,6 +171,7 @@ Page({
   },
 
   onLoad() {
+    this.favoriteIds = new Set();
     this.fetchData(true);
   },
 

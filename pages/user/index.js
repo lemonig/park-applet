@@ -28,6 +28,7 @@ Page({
     },
     menuList: [
       { key: 'my', title: '我的发布', icon: 'view-list', url: '/pages/my-market/index' },
+      { key: 'favorite', title: '我的收藏', icon: 'star', url: '/pages/my-favorite/index' },
       { key: 'feedback', title: '意见反馈', icon: 'chat', url: '/pages/feedback/index' },
       { key: 'service', title: '联系客服', icon: 'service', action: 'contactService' },
       { key: 'about', title: '关于我们', icon: 'info-circle', action: 'showAbout' },
@@ -171,7 +172,7 @@ Page({
 
   // 未登录拦截（部分菜单允许免登录浏览）
   requireLogin(key) {
-    const needLoginKeys = ['my', 'profile', 'feedback'];
+    const needLoginKeys = ['my', 'favorite', 'profile', 'feedback'];
     if (needLoginKeys.includes(key) && !this.data.isLogin) {
       wx.showToast({ title: '请先登录', icon: 'none' });
       setTimeout(() => this.goLogin(), 600);

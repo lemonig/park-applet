@@ -1,0 +1,11 @@
+{
+  "usingComponents": {
+    "t-button": "tdesign-miniprogram/button/button",
+    "t-empty": "tdesign-miniprogram/empty/empty",
+    "t-icon": "tdesign-miniprogram/icon/icon",
+    "t-image": "tdesign-miniprogram/image/image",
+    "t-loading": "tdesign-miniprogram/loading/loading",
+    "t-tag": "tdesign-miniprogram/tag/tag"
+  },
+  "enablePullDownRefresh": true
+}
