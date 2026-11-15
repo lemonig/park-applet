@@ -66,7 +66,6 @@
     "t-pull-down-refresh": "tdesign-miniprogram/pull-down-refresh/pull-down-refresh",
     "t-swipe-cell": "tdesign-miniprogram/swipe-cell/swipe-cell",
     "t-toast": "tdesign-miniprogram/toast/toast",
-    "ec-canvas": "/libs/ec-canvas/ec-canvas",
     "navigation-bar": "/components/nav-bar/index",
     "sd-tag": "/components/sd-tag/index",
     "sd-money": "/components/sd-money/index"
@@ -81,7 +80,8 @@
     "color": "#999",
     "selectedColor": "#07C160",
     "borderStyle": "white",
-    "list": [{
+    "list": [
+      {
         "pagePath": "pages/home/index",
         "text": "首页"
       },
