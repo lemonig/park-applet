@@ -14,21 +14,37 @@
     </view>
   </view>
 
-  <view class="community-list">
-    <block wx:for="{{communities}}" wx:key="id">
-      <view class="community-cell" bind:tap="onSelect" data-index="{{index}}">
-        <view class="cell-main">
-          <view class="cell-name">{{item.name}}</view>
-          <view class="cell-sub">{{item.area}}{{item.area && item.address ? ' · ' : ''}}{{item.address}}</view>
+  <block wx:if="{{communities.length}}">
+    <map
+      wx:if="{{mapCenter}}"
+      class="community-map"
+      latitude="{{mapCenter.latitude}}"
+      longitude="{{mapCenter.longitude}}"
+      scale="14"
+      markers="{{markers}}"
+      show-location="{{located}}"
+      bindmarkertap="onMarkerTap"
+    />
+    <view class="community-list">
+      <block wx:for="{{communities}}" wx:key="id">
+        <view class="community-cell" bind:tap="onSelect" data-index="{{index}}">
+          <view class="cell-main">
+            <view class="cell-name">{{item.name}}</view>
+            <view class="cell-sub">{{item.area}}{{item.area && item.address ? ' · ' : ''}}{{item.address}}</view>
+          </view>
+          <text wx:if="{{item.distanceText}}" class="cell-distance">{{item.distanceText}}</text>
         </view>
-        <text wx:if="{{item.distanceText}}" class="cell-distance">{{item.distanceText}}</text>
-      </view>
-    </block>
-
-    <t-empty wx:if="{{!loading && searched && communities.length === 0}}" description="没有找到相关小区，可联系管理员添加" />
-
-    <view wx:if="{{loading}}" class="list-tip">
-      <t-loading theme="circular" size="40rpx" text="加载中..." inherit-color />
+      </block>
     </view>
+  </block>
+
+  <block wx:else>
+    <view class="community-list">
+      <t-empty wx:if="{{!loading && searched}}" description="没有找到相关小区，可联系管理员添加" />
+    </view>
+  </block>
+
+  <view wx:if="{{loading}}" class="list-tip">
+    <t-loading theme="circular" size="40rpx" text="加载中..." inherit-color />
   </view>
 </view>
