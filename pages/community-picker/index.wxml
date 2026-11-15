@@ -30,7 +30,7 @@
         <view class="community-cell" bind:tap="onSelect" data-index="{{index}}">
           <view class="cell-main">
             <view class="cell-name">{{item.name}}</view>
-            <view class="cell-sub">{{item.area}}{{item.area && item.address ? ' · ' : ''}}{{item.address}}</view>
+            <view wx:if="{{item.subText}}" class="cell-sub">{{item.subText}}</view>
           </view>
           <text wx:if="{{item.distanceText}}" class="cell-distance">{{item.distanceText}}</text>
         </view>

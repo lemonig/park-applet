@@ -56,6 +56,7 @@ Page({
       if (res && res.success !== false && Array.isArray(res.data)) {
         const communities = res.data.map((item) => ({
           ...item,
+          subText: [item.area, item.address].filter(Boolean).join(' · '),
           distanceText: this.formatDistance(item.distanceMeters),
         }));
         this.setData({
