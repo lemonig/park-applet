@@ -52,17 +52,11 @@
   <!-- 位置信息 -->
   <view class="weui-cells__title">位置信息</view>
   <view class="weui-cells">
-    <view class="weui-cell">
-      <view class="weui-label">小区</view>
-      <view class="weui-cell__bd">
-        <input
-          class="weui-input"
-          value="{{form.community}}"
-          placeholder="请输入小区名称"
-          placeholder-class="weui-input__placeholder"
-          data-field="community"
-          bindinput="onInput"
-        />
+    <view class="weui-cell" bind:tap="onPickCommunity">
+      <view class="weui-label">所在小区<text class="req">*</text></view>
+      <view class="weui-cell__bd community-cell-bd">
+        <text class="community-value {{form.community ? '' : 'community-placeholder'}}">{{form.community || '请选择小区'}}</text>
+        <text class="community-arrow">›</text>
       </view>
     </view>
     <view class="weui-cell">

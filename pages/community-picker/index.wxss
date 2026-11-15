@@ -1,0 +1,69 @@
+/* 小区选择器 —— 微信原生（WeUI）风格 */
+.picker-page {
+  min-height: 100vh;
+  background-color: var(--weui-bg, #ededed);
+}
+
+.search-wrap {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #fff;
+  padding: 8rpx 24rpx 16rpx;
+}
+
+.sort-hint {
+  font-size: 24rpx;
+  color: var(--weui-fg-2, rgba(0, 0, 0, 0.55));
+}
+
+.community-list {
+  padding: 24rpx;
+}
+
+.community-cell {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  margin-bottom: 20rpx;
+}
+
+.cell-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.cell-name {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: var(--weui-fg, rgba(0, 0, 0, 0.9));
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cell-sub {
+  margin-top: 8rpx;
+  font-size: 24rpx;
+  color: var(--weui-fg-2, rgba(0, 0, 0, 0.55));
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cell-distance {
+  flex-shrink: 0;
+  margin-left: 24rpx;
+  font-size: 24rpx;
+  color: var(--weui-brand, #07C160);
+}
+
+.list-tip {
+  display: flex;
+  justify-content: center;
+  padding: 40rpx 0;
+  font-size: 26rpx;
+  color: var(--weui-fg-2, rgba(0, 0, 0, 0.55));
+}

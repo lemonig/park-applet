@@ -1,0 +1,34 @@
+<navigation-bar default-data="{{titleProps}}" back="{{true}}"></navigation-bar>
+
+<view class="picker-page">
+  <view class="search-wrap">
+    <t-search
+      value="{{keyword}}"
+      placeholder="搜索小区名称"
+      bind:change="onSearch"
+    />
+    <view class="sort-hint">
+      <block wx:if="{{locating}}">正在定位…</block>
+      <block wx:elif="{{located}}">已按距离由近到远排序</block>
+      <block wx:else>未开启定位，可直接搜索小区名称</block>
+    </view>
+  </view>
+
+  <view class="community-list">
+    <block wx:for="{{communities}}" wx:key="id">
+      <view class="community-cell" bind:tap="onSelect" data-index="{{index}}">
+        <view class="cell-main">
+          <view class="cell-name">{{item.name}}</view>
+          <view class="cell-sub">{{item.area}}{{item.area && item.address ? ' · ' : ''}}{{item.address}}</view>
+        </view>
+        <text wx:if="{{item.distanceText}}" class="cell-distance">{{item.distanceText}}</text>
+      </view>
+    </block>
+
+    <t-empty wx:if="{{!loading && searched && communities.length === 0}}" description="没有找到相关小区，可联系管理员添加" />
+
+    <view wx:if="{{loading}}" class="list-tip">
+      <t-loading theme="circular" size="40rpx" text="加载中..." inherit-color />
+    </view>
+  </view>
+</view>

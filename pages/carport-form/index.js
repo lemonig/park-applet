@@ -4,7 +4,6 @@ import { listDictItems } from '../../api/dict';
 
 const app = getApp();
 const MAX_IMAGE_COUNT = 6;
-const LOCATION_CACHE_KEY = 'marketLocation';
 
 function getInputValue(e) {
   if (e && e.detail && typeof e.detail === 'object' && Object.prototype.hasOwnProperty.call(e.detail, 'value')) {
@@ -28,8 +27,7 @@ Page({
       parkingNo: '',
       price: '',
       phone: '',
-      city: '',
-      area: '',
+      communityId: null,
       community: '',
       positionDesc: '',
       specs: '',
@@ -61,7 +59,6 @@ Page({
       this.fetchDetail(id);
     } else {
       this.fillUserPhone();
-      this.fillLocation();
       this.fetchBuildings();
     }
   },
@@ -81,8 +78,7 @@ Page({
           parkingNo: item.parkingNo || '',
           price: item.price != null ? String(item.price) : '',
           phone: item.phone || '',
-          city: item.city || '',
-          area: item.area || '',
+          communityId: item.communityId != null ? item.communityId : null,
           community: item.community || '',
           positionDesc: item.positionDesc || '',
           specs: item.specs || '',
@@ -113,42 +109,20 @@ Page({
     }
   },
 
-  fillLocation() {
-    const cached = wx.getStorageSync(LOCATION_CACHE_KEY);
-    if (cached && (cached.city || cached.area)) {
-      this.setData({
-        'form.city': cached.city || '',
-        'form.area': cached.area || '',
-      });
-    }
-
-    wx.getLocation({
-      type: 'gcj02',
-      success: (res) => {
-        this.reverseGeocode(res.latitude, res.longitude);
-      },
-    });
-  },
-
-  reverseGeocode(latitude, longitude) {
-    wx.request({
-      url: 'https://apis.map.qq.com/ws/geocoder/v1/',
-      data: {
-        location: `${latitude},${longitude}`,
-        get_poi: 0,
-      },
-      success: ({ data }) => {
-        const component = data && data.result && data.result.address_component;
-        if (!component) return;
-        const location = {
-          city: component.city || '',
-          area: component.district || '',
-        };
-        wx.setStorageSync(LOCATION_CACHE_KEY, location);
-        this.setData({
-          'form.city': location.city,
-          'form.area': location.area,
-        });
+  /**
+   * 小区选择：标的地址以小区库为唯一来源，填报人位置不参与地址生成。
+   */
+  onPickCommunity() {
+    wx.navigateTo({
+      url: '/pages/community-picker/index',
+      events: {
+        selectCommunity: (community) => {
+          if (!community || !community.id) return;
+          this.setData({
+            'form.communityId': community.id,
+            'form.community': community.name || '',
+          });
+        },
       },
     });
   },
@@ -235,6 +209,9 @@ Page({
     if (!phoneReg.test(String(form.phone).trim())) {
       return '请输入正确联系电话';
     }
+    if (!form.communityId) {
+      return '请选择车位所在小区';
+    }
     if (form.description && form.description.length > 500) {
       return '详细说明不能超过500个字符';
     }
@@ -248,9 +225,8 @@ Page({
       parkingNo: form.parkingNo.trim(),
       price: Number(form.price),
       phone: form.phone.trim(),
-      city: form.city.trim(),
-      area: form.area.trim(),
-      community: form.community.trim(),
+      // 小区必填：city/area/community 由服务端按 communityId 对应小区回写
+      communityId: form.communityId,
       positionDesc: form.positionDesc.trim(),
       specs: form.specs.trim(),
       description: form.description.trim(),

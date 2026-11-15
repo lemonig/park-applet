@@ -41,3 +41,30 @@
   background: var(--weui-primary, #07c160) !important;
   border-color: var(--weui-primary, #07c160) !important;
 }
+
+/* 小区选择入口 */
+.community-cell-bd {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.community-value {
+  font-size: 30rpx;
+  color: var(--weui-fg, rgba(0, 0, 0, 0.9));
+  text-align: right;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.community-placeholder {
+  color: var(--weui-fg-3, rgba(0, 0, 0, 0.35));
+}
+
+.community-arrow {
+  margin-left: 12rpx;
+  color: var(--weui-fg-3, rgba(0, 0, 0, 0.35));
+  font-size: 32rpx;
+}
