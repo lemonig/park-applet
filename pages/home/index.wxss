@@ -90,12 +90,16 @@
   display: flex;
   flex-direction: row;
 }
-/* 收藏星标：绝对定位卡片右上角，扩大热区 */
+/* 标题行右侧：类型标签 + 收藏星标 */
+.header-right {
+  display: flex;
+  align-items: center;
+}
+/* 收藏星标：跟在类型标签后，扩一点热区 */
 .fav-btn {
-  position: absolute;
-  top: 0;
-  right: 0;
-  padding: 16rpx;
+  padding: 8rpx 0 8rpx 16rpx;
+  margin: -8rpx 0;
+  line-height: 1;
 }
 /* 左侧布局 */
 .card-left {

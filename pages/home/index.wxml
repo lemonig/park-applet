@@ -32,13 +32,6 @@
   <view class="list-section">
     <block wx:for="{{pageData}}" wx:key="id">
       <view class="parking-card" bind:tap="onBook" data-id="{{item.id}}">
-        <view class="fav-btn" catch:tap="onToggleFavorite" data-index="{{index}}">
-          <t-icon
-            name="{{item.favorited ? 'star-filled' : 'star'}}"
-            size="44rpx"
-            color="{{item.favorited ? '#fa5151' : '#b2b2b2'}}"
-          />
-        </view>
         <view class="card-left">
           <t-image src="{{item.imageUrl}}" width="200rpx" height="200rpx" shape="round" mode="aspectFill" aria-label="车位图片" />
           <view class="status-badge {{item.available ? 'status-active' : 'status-sold'}}">
@@ -49,7 +42,16 @@
         <view class="card-right">
           <view class="card-header">
             <text class="parking-number">{{item.parkingNo}}</text>
-            <t-tag variant="light" theme="{{item.type === 1 ? 'warning' : 'primary'}}" size="small">{{item.typeText}}</t-tag>
+            <view class="header-right">
+              <t-tag variant="light" theme="{{item.type === 1 ? 'warning' : 'primary'}}" size="small">{{item.typeText}}</t-tag>
+              <view class="fav-btn" catch:tap="onToggleFavorite" data-index="{{index}}">
+                <t-icon
+                  name="{{item.favorited ? 'star-filled' : 'star'}}"
+                  size="44rpx"
+                  color="{{item.favorited ? '#fa5151' : '#b2b2b2'}}"
+                />
+              </view>
+            </view>
           </view>
 
           <view class="card-tags">
