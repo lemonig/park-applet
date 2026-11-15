@@ -1,7 +1,0 @@
-/* components/Space/index.wxss */
-
-.space-wrap {
-  display: inline-flex;
-  align-items: center;
-  gap: 16rpx;
-}
