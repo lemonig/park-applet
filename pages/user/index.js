@@ -187,7 +187,14 @@ Page({
       this.goLogin();
       return;
     }
-    wx.navigateTo({ url: '/pages/profile-edit/index' });
+    wx.navigateTo({
+      url: '/pages/profile-edit/index',
+      fail: (err) => {
+        // 典型场景：app.json 新增页面后未重新编译，当前包里没有该页
+        console.error('navigateTo profile-edit fail', err);
+        wx.showToast({ title: '页面打开失败，请重新编译', icon: 'none' });
+      },
+    });
   },
 
   // 阻止头像按钮的 tap 冒泡到资料区
