@@ -9,7 +9,7 @@
         <button class="avatar-btn" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
           <image class="avatar-img" src="{{avatar}}" mode="aspectFill" />
         </button>
-        <text class="avatar-tip">{{avatarSaving ? '上传中…' : '点击更换微信头像'}}</text>
+        <text class="avatar-tip">点击更换，保存后生效</text>
       </view>
     </view>
     <view class="weui-cell">

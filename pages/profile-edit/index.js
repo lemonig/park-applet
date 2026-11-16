@@ -30,7 +30,6 @@ Page({
       description: '',
     },
     ...buildAvatarData(null),
-    avatarSaving: false,
     saving: false,
   },
 
@@ -75,33 +74,13 @@ Page({
     });
   },
 
-  // 选择微信头像：上传 COS 后持久化（与我的页同一管线）
-  async onChooseAvatar(e) {
+  // 选择微信头像：仅本地预览（chooseAvatar 给的是临时路径），
+  // 点「保存」时才上传 COS 并随表单一并落库；不保存返回则不变更
+  onChooseAvatar(e) {
     const filePath = e && e.detail && e.detail.avatarUrl;
-    if (!filePath || this.data.avatarSaving) return;
-    this.setData({ avatarSaving: true });
-    wx.showLoading({ title: '保存中', mask: true });
-    try {
-      const up = await uploadFile(filePath);
-      const url = up && up.data && up.data.url;
-      if (!url) {
-        wx.showToast({ title: '头像上传失败', icon: 'none' });
-        return;
-      }
-      const res = await updateUserProfile({ avatar: url });
-      if (res && res.success !== false) {
-        this.mergeStorage({ avatar: url });
-        this.setData(buildAvatarData({ avatar: url }));
-        wx.showToast({ title: '头像已更新', icon: 'success' });
-      } else {
-        wx.showToast({ title: '头像保存失败', icon: 'none' });
-      }
-    } catch (err) {
-      wx.showToast({ title: '头像保存失败', icon: 'none' });
-    } finally {
-      wx.hideLoading();
-      this.setData({ avatarSaving: false });
-    }
+    if (!filePath) return;
+    this.avatarTempPath = filePath;
+    this.setData(buildAvatarData({ avatar: filePath }));
   },
 
   // '' 昵称不能存（DB NOT NULL）、手机号清空存空串（动态 SQL 会落库）
@@ -121,7 +100,7 @@ Page({
   },
 
   async submitForm() {
-    if (this.data.saving || this.data.avatarSaving) return;
+    if (this.data.saving) return;
     const error = this.validateForm();
     if (error) {
       wx.showToast({ title: error, icon: 'none' });
@@ -129,13 +108,38 @@ Page({
     }
     this.setData({ saving: true });
     try {
-      const name = this.data.form.name.trim();
-      const mobile = (this.data.form.mobile || '').trim();
-      const description = (this.data.form.description || '').trim();
-      const res = await updateUserProfile({ name, mobile, description });
+      const payload = {
+        name: this.data.form.name.trim(),
+        mobile: (this.data.form.mobile || '').trim(),
+        description: (this.data.form.description || '').trim(),
+      };
+
+      // 头像换过才上传：失败则中断本次保存（文本字段未落库，可重试）
+      let avatarUrl = null;
+      if (this.avatarTempPath) {
+        wx.showLoading({ title: '上传头像中', mask: true });
+        const up = await uploadFile(this.avatarTempPath);
+        wx.hideLoading();
+        avatarUrl = up && up.data && up.data.url;
+        if (!avatarUrl) {
+          wx.showToast({ title: '头像上传失败', icon: 'none' });
+          this.setData({ saving: false });
+          return;
+        }
+        payload.avatar = avatarUrl;
+      }
+
+      const res = await updateUserProfile(payload);
       if (res && res.success !== false) {
         // 登录缓存用 nickname 展示、profile 用 name，两个键同步更新
-        this.mergeStorage({ name, nickname: name, mobile, description });
+        const patch = {
+          name: payload.name,
+          nickname: payload.name,
+          mobile: payload.mobile,
+          description: payload.description,
+        };
+        if (avatarUrl) patch.avatar = avatarUrl;
+        this.mergeStorage(patch);
         wx.showToast({ title: '已保存', icon: 'success' });
         setTimeout(() => wx.navigateBack({ delta: 1 }), 800);
       } else {
@@ -143,6 +147,7 @@ Page({
         this.setData({ saving: false });
       }
     } catch (err) {
+      wx.hideLoading();
       wx.showToast({ title: '保存失败', icon: 'none' });
       this.setData({ saving: false });
     }
