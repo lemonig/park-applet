@@ -181,13 +181,13 @@ Page({
     return true;
   },
 
-  // 头像/昵称区域点击
+  // 头像/昵称区域点击：进入个人资料编辑
   onProfileTap() {
     if (!this.data.isLogin) {
       this.goLogin();
       return;
     }
-    wx.showToast({ title: '资料编辑功能开发中', icon: 'none' });
+    wx.navigateTo({ url: '/pages/profile-edit/index' });
   },
 
   // 阻止头像按钮的 tap 冒泡到资料区
