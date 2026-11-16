@@ -181,13 +181,20 @@ Page({
     return true;
   },
 
-  // 头像/昵称区域点击
+  // 头像/昵称区域点击：进入个人资料编辑
   onProfileTap() {
     if (!this.data.isLogin) {
       this.goLogin();
       return;
     }
-    wx.showToast({ title: '资料编辑功能开发中', icon: 'none' });
+    wx.navigateTo({
+      url: '/pages/profile-edit/index',
+      fail: (err) => {
+        // 典型场景：app.json 新增页面后未重新编译，当前包里没有该页
+        console.error('navigateTo profile-edit fail', err);
+        wx.showToast({ title: '页面打开失败，请重新编译', icon: 'none' });
+      },
+    });
   },
 
   // 阻止头像按钮的 tap 冒泡到资料区

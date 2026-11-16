@@ -1,0 +1,75 @@
+<navigation-bar default-data="{{titleProps}}" back="{{true}}"></navigation-bar>
+
+<view class="form-page">
+  <view class="weui-cells__title">头像与昵称</view>
+  <view class="weui-cells">
+    <view class="weui-cell">
+      <view class="weui-label">头像</view>
+      <view class="weui-cell__bd avatar-cell-bd">
+        <button class="avatar-btn" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
+          <image class="avatar-img" src="{{avatar}}" mode="aspectFill" />
+        </button>
+        <text class="avatar-tip">点击更换，保存后生效</text>
+      </view>
+    </view>
+    <view class="weui-cell">
+      <view class="weui-label">昵称<text class="req">*</text></view>
+      <view class="weui-cell__bd">
+        <input
+          class="weui-input"
+          type="nickname"
+          value="{{form.name}}"
+          placeholder="请输入昵称"
+          placeholder-class="weui-input__placeholder"
+          maxlength="50"
+          data-field="name"
+          bindinput="onInput"
+          bindblur="onInput"
+        />
+      </view>
+    </view>
+  </view>
+
+  <view class="weui-cells__title">联系与简介</view>
+  <view class="weui-cells">
+    <view class="weui-cell">
+      <view class="weui-label">手机号</view>
+      <view class="weui-cell__bd">
+        <input
+          class="weui-input"
+          type="number"
+          value="{{form.mobile}}"
+          placeholder="选填"
+          placeholder-class="weui-input__placeholder"
+          maxlength="11"
+          data-field="mobile"
+          bindinput="onInput"
+        />
+      </view>
+    </view>
+    <view class="weui-cell weui-cell_block">
+      <view class="cell-block-title">简介<text class="cell-block-tip">{{form.description.length}}/255</text></view>
+      <textarea
+        class="weui-textarea"
+        value="{{form.description}}"
+        placeholder="介绍一下自己（选填）"
+        placeholder-class="weui-input__placeholder"
+        maxlength="255"
+        auto-height
+        data-field="description"
+        bindinput="onInput"
+      />
+    </view>
+  </view>
+
+  <view class="submit-spacer"></view>
+</view>
+
+<view class="submit-bar">
+  <button
+    class="weui-btn weui-btn_primary {{saving ? 'weui-btn_disabled' : ''}}"
+    hover-class="{{saving ? 'none' : 'weui-btn_active'}}"
+    loading="{{saving}}"
+    bind:tap="submitForm"
+  >保存</button>
+</view>

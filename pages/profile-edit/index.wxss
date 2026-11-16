@@ -1,0 +1,42 @@
+/* 个人资料编辑 —— WeUI 风格，表单基础样式见 app.wxss */
+.form-page {
+  min-height: 100vh;
+  padding: 8rpx 0 40rpx;
+  box-sizing: border-box;
+}
+.submit-spacer {
+  height: 160rpx;
+}
+/* 头像行 */
+.avatar-cell-bd {
+  display: flex;
+  align-items: center;
+}
+/* 重置原生 button 样式（与我的页头像一致） */
+.avatar-btn {
+  flex-shrink: 0;
+  width: 112rpx;
+  height: 112rpx;
+  padding: 0;
+  margin: 0;
+  border-radius: 50%;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  line-height: 1;
+  box-sizing: border-box;
+}
+.avatar-btn::after {
+  border: none;
+}
+.avatar-img {
+  display: block;
+  width: 112rpx;
+  height: 112rpx;
+  border-radius: 50%;
+}
+.avatar-tip {
+  margin-left: 24rpx;
+  font-size: 24rpx;
+  color: var(--weui-fg-3, rgba(0, 0, 0, 0.35));
+}
